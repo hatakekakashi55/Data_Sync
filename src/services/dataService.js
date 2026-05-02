@@ -47,6 +47,16 @@ export async function requestPermissions() {
   }
 }
 
+export async function startNotification() {
+  try {
+    if (hasPermission) {
+      await DataUsage.startNotificationService();
+    }
+  } catch (e) {
+    console.warn("Could not start notification", e);
+  }
+}
+
 // Fetch real historical data usage from Android Plugin
 async function fetchNativeUsage() {
   try {

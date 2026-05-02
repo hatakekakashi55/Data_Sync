@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Download, Upload, AlertTriangle, CalendarDays } from 'lucide-react';
-import { subscribe, startTracking, formatBytes, formatDuration, getUsageSnapshot, requestPermissions } from '../services/dataService';
+import { Download, Upload, AlertTriangle, CalendarDays, BellRing } from 'lucide-react';
+import { subscribe, startTracking, formatBytes, formatDuration, getUsageSnapshot, requestPermissions, startNotification } from '../services/dataService';
 
 export default function DashboardScreen({ dataLimit }) {
   const [data, setData] = useState(getUsageSnapshot());
@@ -9,6 +9,7 @@ export default function DashboardScreen({ dataLimit }) {
   useEffect(() => {
     if (!startedRef.current) {
       startTracking();
+      setTimeout(startNotification, 2000); // Start notification after tracking initializes
       startedRef.current = true;
     }
     const unsub = subscribe((snap) => {

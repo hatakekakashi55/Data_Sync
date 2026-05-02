@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.app.usage.NetworkStats;
 import android.app.usage.NetworkStatsManager;
+import android.os.Build;
 import android.os.Process;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -108,5 +109,29 @@ public class DataUsagePlugin extends Plugin {
         ret.put("monthlyTotal", monthlyRx + monthlyTx);
         
         call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void startNotificationService(PluginCall call) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                getContext().startForegroundService(new Intent(getContext(), DataUsageService.class));
+            } else {
+                getContext().startService(new Intent(getContext(), DataUsageService.class));
+            }
+            call.resolve();
+        } catch (Exception e) {
+            call.reject("Could not start notification service: " + e.getMessage());
+        }
+    }
+
+    @PluginMethod
+    public void stopNotificationService(PluginCall call) {
+        try {
+            getContext().stopService(new Intent(getContext(), DataUsageService.class));
+            call.resolve();
+        } catch (Exception e) {
+            call.reject("Could not stop notification service: " + e.getMessage());
+        }
     }
 }
