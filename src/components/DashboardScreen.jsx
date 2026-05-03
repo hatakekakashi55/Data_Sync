@@ -53,7 +53,7 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
           ) : (
             appsData.map((app, i) => (
               <div className="app-item" key={i} style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
-                <div className="app-icon" style={{ minWidth: 40, height: 40, borderRadius: 8, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#555' }}>
+                <div className="app-icon" style={{ minWidth: 40, height: 40, borderRadius: 8, background: 'var(--accent-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>
                   {app.appName.charAt(0).toUpperCase()}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -93,14 +93,14 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
                 <div className="data-large">{formatBytes(lastMonthData.totalBytes).value} <span className="data-unit">{formatBytes(lastMonthData.totalBytes).unit}</span></div>
               </div>
               <div className="stats-grid">
-                <div className="glass" style={{ padding: 16, background: '#0F0F0F', borderColor: '#222' }}>
+                <div className="glass" style={{ padding: 16, background: 'var(--bg-secondary)', borderColor: 'var(--border-glass)' }}>
                   <div className="flex-between" style={{ marginBottom: 12 }}>
                     <div className="card-label" style={{ margin: 0 }}>MOBILE</div>
                     <Smartphone size={16} color="var(--text-muted)" />
                   </div>
                   <div className="card-value" style={{ fontSize: '1.2rem' }}>{formatBytes(lastMonthData.mobileBytes).full}</div>
                 </div>
-                <div className="glass" style={{ padding: 16, background: '#0F0F0F', borderColor: '#222' }}>
+                <div className="glass" style={{ padding: 16, background: 'var(--bg-secondary)', borderColor: 'var(--border-glass)' }}>
                   <div className="flex-between" style={{ marginBottom: 12 }}>
                     <div className="card-label" style={{ margin: 0 }}>WI-FI</div>
                     <Wifi size={16} color="var(--text-muted)" />
@@ -133,7 +133,7 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
       </div>
 
       {!data.hasPermission && (
-        <div className="glass" style={{ marginBottom: 20, borderColor: '#333333' }}>
+        <div className="glass" style={{ marginBottom: 20, borderColor: 'var(--border-glass)' }}>
            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               <AlertTriangle color="#888888" />
               <div style={{ flex: 1, fontSize: '0.85rem', color: '#AAAAAA' }}>
@@ -142,7 +142,7 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
               </div>
               <button 
                  onClick={requestPermissions}
-                 style={{ background: '#333333', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: 8, cursor: 'pointer', fontWeight: '500', fontSize: '0.75rem' }}
+                 style={{ background: 'var(--accent)', color: 'var(--bg-primary)', border: 'none', padding: '8px 16px', borderRadius: 8, cursor: 'pointer', fontWeight: '600', fontSize: '0.75rem' }}
               >
                 GRANT
               </button>
@@ -223,8 +223,6 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
             gap: 12, 
             padding: '12px 24px', 
             borderRadius: 30, 
-            border: '1px solid #222',
-            background: 'rgba(10,10,10,0.8)',
             color: 'var(--text-primary)',
             fontSize: '0.9rem',
             fontWeight: '600',

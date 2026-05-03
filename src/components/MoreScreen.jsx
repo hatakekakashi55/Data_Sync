@@ -14,13 +14,13 @@ export default function MoreScreen({ theme, onThemeToggle, onBack }) {
         <div style={{ 
           width: 80, 
           height: 80, 
-          background: '#111', 
+          background: 'var(--accent-dim)', 
           borderRadius: 20, 
           margin: '0 auto 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          border: '1px solid #222'
+          border: '1px solid var(--border-glass)'
         }}>
            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{ width: 4, height: 20, background: '#555', borderRadius: 2 }} />
