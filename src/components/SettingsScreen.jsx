@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight, ArrowLeft } from 'lucide-react';
 import { requestPermissions, checkPermissions, startNotification, stopNotification, setAutoStart as nativeSetAutoStart } from '../services/dataService';
 
-export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack }) {
+export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack, onOpenMore }) {
   const [hasPerm, setHasPerm] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(localStorage.getItem('notifEnabled') !== 'false');
   const [autoStart, setAutoStart] = useState(localStorage.getItem('autoStart') !== 'false');
@@ -100,11 +100,11 @@ export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack })
           <div className="setting-item-chevron"><ChevronRight size={18} /></div>
         </div>
 
-        <div className="setting-item-row" style={{ padding: '16px 20px' }}>
+        <div className="setting-item-row" style={{ padding: '16px 20px' }} onClick={onOpenMore}>
           <div className="setting-item-icon"><Smartphone size={22} /></div>
           <div className="setting-item-info">
-            <div className="setting-label">About Data Sync</div>
-            <div className="setting-subtitle">v3.5.0 — Monochrome Edition</div>
+            <div className="setting-label">More</div>
+            <div className="setting-subtitle">App info, feedback and theme</div>
           </div>
           <div className="setting-item-chevron"><ChevronRight size={18} /></div>
         </div>

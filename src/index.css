@@ -1,4 +1,4 @@
-/* ===== DATA SYNC — Pure Dark System ===== */
+/* ===== DATA SYNC — Pure System ===== */
 :root {
   --bg-primary: #000000;
   --bg-secondary: #080808;
@@ -22,6 +22,24 @@
   --font-display: 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-ui: 'Inter', sans-serif;
+}
+
+[data-theme='light'] {
+  --bg-primary: #F5F5F7;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FAFAFA;
+  
+  --accent: #D2D2D7;
+  --accent-dim: #E8E8ED;
+  --accent-dark: #86868B;
+  --accent-dark-dim: #D2D2D7;
+  
+  --text-primary: #1D1D1F;
+  --text-secondary: #424245;
+  --text-muted: #86868B;
+  
+  --border-glass: #E5E5E7;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
