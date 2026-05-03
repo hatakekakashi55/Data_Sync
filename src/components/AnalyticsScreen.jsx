@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell, PieChart, Pie } from 'recharts';
 import { subscribe, formatBytes, getUsageSnapshot } from '../services/dataService';
 
-const COLORS = ['#DC143C', '#8B0000', '#FF4D6A', '#FFB800'];
+const COLORS = ['#888888', '#444444', '#666666', '#222222'];
 
 export default function AnalyticsScreen() {
   const [data, setData] = useState(getUsageSnapshot());
@@ -15,12 +15,12 @@ export default function AnalyticsScreen() {
   }, []);
 
   const pieData = [
-    { name: 'Daily Download', value: data.dailyDownload, color: COLORS[0] },
-    { name: 'Daily Upload', value: data.dailyUpload, color: COLORS[1] }
+    { name: 'Mobile Data', value: data.dailyMobile, color: COLORS[0] },
+    { name: 'Wi-Fi Data', value: data.dailyWifi, color: COLORS[1] }
   ].filter(d => d.value > 0);
 
   if (pieData.length === 0) {
-    pieData.push({ name: 'No data', value: 1, color: 'rgba(255,255,255,0.1)' });
+    pieData.push({ name: 'No data', value: 1, color: '#1A1A1A' });
   }
   
   const barData = [
@@ -30,18 +30,18 @@ export default function AnalyticsScreen() {
 
   return (
     <div className="page-container">
-      <h1 className="page-header">N E T W O R K &nbsp; I N S I G H T S</h1>
+      <h1 className="page-header">ANALYTICS</h1>
 
       <div className="section-title">USAGE COMPARISON</div>
       <div className="glass analytics-chart-card">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={barData} barCategoryGap="20%">
-            <XAxis dataKey="label" tick={{ fill: 'rgba(255,255,255,0.35)', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="label" tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis hide />
-            <Tooltip contentStyle={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
-              formatter={(v) => [formatBytes(v).full, '']} labelStyle={{ color: 'rgba(255,255,255,0.5)' }} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
-            <Bar dataKey="download" name="Download" stackId="a" radius={[0, 0, 0, 0]} fill="#DC143C" fillOpacity={0.85} />
-            <Bar dataKey="upload" name="Upload" stackId="a" radius={[6, 6, 0, 0]} fill="#8B0000" fillOpacity={0.85} />
+            <Tooltip contentStyle={{ background: '#0A0A0A', border: '1px solid #222', borderRadius: 8, fontSize: 12, color: '#CCC' }}
+              formatter={(v) => [formatBytes(v).full, '']} cursor={{ fill: '#111' }} />
+            <Bar dataKey="download" name="Download" stackId="a" radius={[0, 0, 0, 0]} fill="#555" fillOpacity={0.85} />
+            <Bar dataKey="upload" name="Upload" stackId="a" radius={[4, 4, 0, 0]} fill="#333" fillOpacity={0.85} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -51,16 +51,16 @@ export default function AnalyticsScreen() {
         <ResponsiveContainer width="100%" height={260}>
           <PieChart>
             <Pie data={pieData} cx="50%" cy="50%" innerRadius={45} outerRadius={80}
-              paddingAngle={4} dataKey="value"
+              paddingAngle={2} dataKey="value"
               label={({ name, percent }) => percent > 0.05 ? name : ''}
               labelLine={false}
-              style={{ fontSize: 10, fill: 'rgba(255,255,255,0.7)' }}
+              style={{ fontSize: 10, fill: '#888' }}
             >
               {pieData.map((entry, i) => (
                 <Cell key={i} fill={entry.color} stroke="none" />
               ))}
             </Pie>
-            <Tooltip contentStyle={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, fontSize: 12 }}
+            <Tooltip contentStyle={{ background: '#0A0A0A', border: '1px solid #222', borderRadius: 8, fontSize: 12, color: '#CCC' }}
               formatter={(v) => [formatBytes(v).full, 'Usage']} />
           </PieChart>
         </ResponsiveContainer>

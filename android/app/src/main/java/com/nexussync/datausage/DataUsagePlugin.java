@@ -71,17 +71,22 @@ public class DataUsagePlugin extends Plugin {
 
         long dailyRx = 0, dailyTx = 0;
         long monthlyRx = 0, monthlyTx = 0;
+        
+        long dailyMobileTotal = 0;
+        long dailyWifiTotal = 0;
 
         try {
             // Daily Mobile
             NetworkStats.Bucket dailyMobile = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE, null, startOfDay, now);
             dailyRx += dailyMobile.getRxBytes();
             dailyTx += dailyMobile.getTxBytes();
+            dailyMobileTotal = dailyMobile.getRxBytes() + dailyMobile.getTxBytes();
             
             // Daily WiFi
             NetworkStats.Bucket dailyWifi = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_WIFI, null, startOfDay, now);
             dailyRx += dailyWifi.getRxBytes();
             dailyTx += dailyWifi.getTxBytes();
+            dailyWifiTotal = dailyWifi.getRxBytes() + dailyWifi.getTxBytes();
             
             // Monthly Mobile
             NetworkStats.Bucket monthlyMobile = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE, null, startOfMonth, now);
@@ -103,6 +108,9 @@ public class DataUsagePlugin extends Plugin {
         ret.put("dailyDownload", dailyRx);
         ret.put("dailyUpload", dailyTx);
         ret.put("dailyTotal", dailyRx + dailyTx);
+        
+        ret.put("dailyMobile", dailyMobileTotal);
+        ret.put("dailyWifi", dailyWifiTotal);
         
         ret.put("monthlyDownload", monthlyRx);
         ret.put("monthlyUpload", monthlyTx);

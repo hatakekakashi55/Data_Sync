@@ -65,7 +65,7 @@ export default function SettingsScreen({ dataLimit, onDataLimitChange }) {
       <div className="glass" style={{ padding: 0 }}>
         <div className="setting-row">
           <span className="setting-label">Historical Tracking</span>
-          <span className="setting-value">{snap.hasPermission ? 'Granted' : 'Denied'}</span>
+          <span className="setting-value" style={{ color: snap.hasPermission ? 'var(--text-primary)' : '#555' }}>{snap.hasPermission ? 'Granted' : 'Denied'}</span>
         </div>
         <div className="setting-row">
           <span className="setting-label">Connection Type</span>

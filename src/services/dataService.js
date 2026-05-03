@@ -4,6 +4,8 @@ const DataUsage = registerPlugin('DataUsage');
 let dailyDownload = 0;
 let dailyUpload = 0;
 let dailyTotal = 0;
+let dailyMobile = 0;
+let dailyWifi = 0;
 let monthlyDownload = 0;
 let monthlyUpload = 0;
 let monthlyTotal = 0;
@@ -65,6 +67,8 @@ async function fetchNativeUsage() {
       dailyDownload = result.dailyDownload || 0;
       dailyUpload = result.dailyUpload || 0;
       dailyTotal = result.dailyTotal || 0;
+      dailyMobile = result.dailyMobile || 0;
+      dailyWifi = result.dailyWifi || 0;
       
       monthlyDownload = result.monthlyDownload || 0;
       monthlyUpload = result.monthlyUpload || 0;
@@ -122,6 +126,8 @@ export function getUsageSnapshot() {
     dailyDownload,
     dailyUpload,
     dailyTotal,
+    dailyMobile,
+    dailyWifi,
     monthlyDownload,
     monthlyUpload,
     monthlyTotal,

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Download, Upload, AlertTriangle, CalendarDays, BellRing } from 'lucide-react';
-import { subscribe, startTracking, formatBytes, formatDuration, getUsageSnapshot, requestPermissions, startNotification } from '../services/dataService';
+import { Wifi, Smartphone, AlertTriangle, Activity } from 'lucide-react';
+import { subscribe, startTracking, formatBytes, getUsageSnapshot, requestPermissions, startNotification } from '../services/dataService';
 
 export default function DashboardScreen({ dataLimit }) {
   const [data, setData] = useState(getUsageSnapshot());
@@ -9,7 +9,7 @@ export default function DashboardScreen({ dataLimit }) {
   useEffect(() => {
     if (!startedRef.current) {
       startTracking();
-      setTimeout(startNotification, 2000); // Start notification after tracking initializes
+      setTimeout(startNotification, 2000);
       startedRef.current = true;
     }
     const unsub = subscribe((snap) => {
@@ -19,44 +19,38 @@ export default function DashboardScreen({ dataLimit }) {
   }, []);
 
   const limitBytes = dataLimit * 1024 * 1024 * 1024;
-  const pct = limitBytes > 0 ? Math.min(data.dailyTotal / limitBytes, 1) : 0;
-  const circumference = 2 * Math.PI * 82;
-  const dashOffset = circumference - pct * circumference;
-
-  const dl = formatBytes(data.dailyDownload);
-  const ul = formatBytes(data.dailyUpload);
   const tot = formatBytes(data.dailyTotal);
   
-  const mDl = formatBytes(data.monthlyDownload);
-  const mUl = formatBytes(data.monthlyUpload);
-  const mTot = formatBytes(data.monthlyTotal);
+  const mDl = formatBytes(data.monthlyTotal);
 
   const conn = data.connection;
 
+  // Simple percentage calculations for progress bars
+  const mobilePct = limitBytes > 0 ? Math.min((data.dailyMobile / limitBytes) * 100, 100) : 0;
+  const wifiPct = limitBytes > 0 ? Math.min((data.dailyWifi / limitBytes) * 100, 100) : 0;
+  const totalPct = limitBytes > 0 ? Math.min((data.dailyTotal / limitBytes) * 100, 100) : 0;
+
   return (
     <div className="page-container">
-      <h1 className="page-header">D A T A &nbsp; S Y N C</h1>
-
-      {/* Connection bar */}
-      <div className="connection-bar">
-        <span className={`conn-dot ${conn.online ? 'online' : 'offline'}`} />
-        <span>{conn.online ? 'Online' : 'Offline'}</span>
-        {conn.effectiveType && <span>• {conn.effectiveType.toUpperCase()}</span>}
-        {conn.downlink && <span>• {conn.downlink} Mbps</span>}
-        <span>• Uptime: {formatDuration(data.sessionSeconds)}</span>
+      <div className="flex-between" style={{ paddingBottom: 24 }}>
+        <h1 className="page-header" style={{ padding: 0 }}>DATA SYNC</h1>
+        <div className="status-pill">
+          <div className={`status-dot ${conn.online ? 'active' : ''}`} />
+          {conn.online ? 'CONNECTED' : 'OFFLINE'}
+        </div>
       </div>
 
       {!data.hasPermission && (
-        <div className="glass" style={{ marginBottom: 20, borderColor: 'rgba(255,100,100,0.3)', background: 'rgba(255,100,100,0.05)' }}>
-           <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: '#FF4D6A' }}>
-              <AlertTriangle />
-              <div style={{ flex: 1, fontSize: '0.85rem' }}>
+        <div className="glass" style={{ marginBottom: 20, borderColor: '#333333' }}>
+           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <AlertTriangle color="#888888" />
+              <div style={{ flex: 1, fontSize: '0.85rem', color: '#AAAAAA' }}>
                  <strong>Permission Required</strong><br />
-                 Please grant "Usage Access" to track your device's historical data usage.
+                 Usage Access is needed for history.
               </div>
               <button 
                  onClick={requestPermissions}
-                 style={{ background: '#FF4D6A', color: '#fff', border: 'none', padding: '8px 12px', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem' }}
+                 style={{ background: '#333333', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: 8, cursor: 'pointer', fontWeight: '500', fontSize: '0.75rem' }}
               >
                 GRANT
               </button>
@@ -64,70 +58,57 @@ export default function DashboardScreen({ dataLimit }) {
         </div>
       )}
 
-      {/* Main usage ring - Daily */}
-      <div className="glass data-ring-card">
-        <div className="data-ring-label">TODAY'S USAGE</div>
-        <div className="live-badge"><span className="live-dot" /> LIVE DEVICE SYNC</div>
-        <div className="ring-wrapper">
-          <svg className="ring-svg" viewBox="0 0 200 200">
-            <defs>
-              <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#DC143C" />
-                <stop offset="100%" stopColor="#8B0000" />
-              </linearGradient>
-            </defs>
-            <circle className="ring-track" cx="100" cy="100" r="82" />
-            <circle className="ring-progress" cx="100" cy="100" r="82"
-              strokeDasharray={circumference}
-              strokeDashoffset={dashOffset}
-            />
-          </svg>
-          <div className="ring-center">
-            <span className="ring-value">{tot.value}</span>
-            <span className="ring-unit">{tot.unit}</span>
-          </div>
+      {/* Main Today's Usage Header */}
+      <div className="section-title" style={{ marginTop: 0 }}>TODAY'S USAGE</div>
+      
+      <div style={{ margin: '10px 0 32px 0' }}>
+        <div className="data-large">{tot.value} <span className="data-unit">{tot.unit}</span></div>
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: 8 }}>
+          Out of {dataLimit.toFixed(1)} GB Daily Limit
         </div>
-        <div className="ring-limit">{dataLimit.toFixed(1)} GB Daily Limit</div>
+        <div className="progress-bg" style={{ height: 4 }}>
+          <div className="progress-fill" style={{ width: `${totalPct}%` }} />
+        </div>
       </div>
 
-      {/* Stats row - Daily */}
-      <div style={{ marginTop: 16 }} className="stats-row">
-        <div className="glass stat-card">
-          <div className="stat-icon download"><Download /></div>
-          <div>
-            <div className="stat-label">DAILY DOWN</div>
-            <div className="stat-value">{dl.full}</div>
+      <div className="section-title">USAGE BREAKDOWN</div>
+
+      <div className="stats-grid">
+        {/* Mobile Data Card */}
+        <div className="glass" style={{ padding: 20 }}>
+          <div className="flex-between" style={{ marginBottom: 16 }}>
+            <div className="card-label" style={{ margin: 0 }}>MOBILE</div>
+            <Smartphone size={18} color="var(--text-muted)" />
+          </div>
+          <div className="card-value">{formatBytes(data.dailyMobile).full}</div>
+          <div className="progress-bg">
+            <div className="progress-fill" style={{ width: `${mobilePct}%` }} />
           </div>
         </div>
-        <div className="glass stat-card">
-          <div className="stat-icon upload"><Upload /></div>
-          <div>
-            <div className="stat-label">DAILY UP</div>
-            <div className="stat-value">{ul.full}</div>
+
+        {/* WiFi Data Card */}
+        <div className="glass" style={{ padding: 20 }}>
+          <div className="flex-between" style={{ marginBottom: 16 }}>
+            <div className="card-label" style={{ margin: 0 }}>WI-FI</div>
+            <Wifi size={18} color="var(--text-muted)" />
+          </div>
+          <div className="card-value">{formatBytes(data.dailyWifi).full}</div>
+          <div className="progress-bg">
+            <div className="progress-fill" style={{ width: `${wifiPct}%` }} />
           </div>
         </div>
       </div>
 
-      <div className="section-title">MONTHLY OVERVIEW</div>
-      <div className="glass" style={{ padding: '20px' }}>
-         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.7)' }}>
-               <CalendarDays size={20} />
-               <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>This Month</span>
+      <div className="section-title">THIS MONTH</div>
+      
+      <div className="glass" style={{ padding: 20 }}>
+         <div className="flex-between">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text-secondary)' }}>
+               <Activity size={20} />
+               <span style={{ fontWeight: '400', fontSize: '0.9rem' }}>Total Combined Usage</span>
             </div>
-            <div style={{ fontSize: '1.4rem', fontWeight: '700', color: '#DC143C' }}>
-               {mTot.full}
-            </div>
-         </div>
-         
-         <div style={{ display: 'flex', gap: 10 }}>
-            <div style={{ flex: 1, background: 'rgba(220,20,60,0.05)', padding: 10, borderRadius: 12, border: '1px solid rgba(220,20,60,0.1)' }}>
-               <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.5)', letterSpacing: 1, marginBottom: 4 }}>DOWNLOAD</div>
-               <div style={{ fontWeight: '600', fontSize: '0.95rem' }}>{mDl.full}</div>
-            </div>
-            <div style={{ flex: 1, background: 'rgba(139,0,0,0.05)', padding: 10, borderRadius: 12, border: '1px solid rgba(139,0,0,0.1)' }}>
-               <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.5)', letterSpacing: 1, marginBottom: 4 }}>UPLOAD</div>
-               <div style={{ fontWeight: '600', fontSize: '0.95rem' }}>{mUl.full}</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: '400', color: 'var(--text-primary)' }}>
+               {mDl.full}
             </div>
          </div>
       </div>
