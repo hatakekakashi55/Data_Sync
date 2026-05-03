@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight } from 'lucide-react';
+import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight, ArrowLeft } from 'lucide-react';
 import { requestPermissions, checkPermissions, startNotification, stopNotification, setAutoStart as nativeSetAutoStart } from '../services/dataService';
 
-export default function SettingsScreen({ dataLimit, onDataLimitChange }) {
+export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack }) {
   const [hasPerm, setHasPerm] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(localStorage.getItem('notifEnabled') !== 'false');
   const [autoStart, setAutoStart] = useState(localStorage.getItem('autoStart') !== 'false');
@@ -32,8 +32,12 @@ export default function SettingsScreen({ dataLimit, onDataLimitChange }) {
 
   return (
     <div className="page-container">
-      <h1 className="page-header">SETTINGS</h1>
-
+      <div className="flex-between" style={{ paddingBottom: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <ArrowLeft onClick={onBack} style={{ cursor: 'pointer' }} />
+          <h1 className="page-header" style={{ padding: 0 }}>SETTINGS</h1>
+        </div>
+      </div>
       <div className="section-title">DATA LIMITS</div>
       <div className="glass" style={{ padding: 0 }}>
         <div className="setting-item-row" style={{ padding: '16px 20px', borderBottom: 'none' }}>

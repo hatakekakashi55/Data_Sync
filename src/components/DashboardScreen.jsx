@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Wifi, Smartphone, AlertTriangle, Activity, Grid, CalendarDays, ArrowLeft } from 'lucide-react';
+import { Wifi, Smartphone, AlertTriangle, Activity, Grid, CalendarDays, ArrowLeft, Settings } from 'lucide-react';
 import { subscribe, startTracking, formatBytes, getUsageSnapshot, requestPermissions, startNotification, fetchAppUsage, fetchLastMonthUsage } from '../services/dataService';
 
-export default function DashboardScreen({ dataLimit }) {
+export default function DashboardScreen({ dataLimit, onOpenSettings }) {
   const [data, setData] = useState(getUsageSnapshot());
   const [viewState, setViewState] = useState('dashboard'); // 'dashboard', 'apps', 'lastMonth'
   const [appsData, setAppsData] = useState([]);
@@ -42,7 +42,7 @@ export default function DashboardScreen({ dataLimit }) {
     return (
       <div className="page-container">
         <div className="flex-between" style={{ paddingBottom: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, width: '100%' }}>
             <ArrowLeft onClick={() => setViewState('dashboard')} style={{ cursor: 'pointer' }} />
             <h1 className="page-header" style={{ padding: 0 }}>Apps Usage</h1>
           </div>
@@ -52,15 +52,19 @@ export default function DashboardScreen({ dataLimit }) {
             <div className="empty-state">Loading apps data...</div>
           ) : (
             appsData.map((app, i) => (
-              <div className="app-item" key={i} style={{ padding: '16px 20px' }}>
-                <div className="app-icon">{app.appName.charAt(0).toUpperCase()}</div>
-                <div style={{ flex: 1 }}>
-                  <div className="app-name">{app.appName}</div>
-                  <div className="app-usage" style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: 4 }}>
+              <div className="app-item" key={i} style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div className="app-icon" style={{ minWidth: 40, height: 40, borderRadius: 8, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#555' }}>
+                  {app.appName.charAt(0).toUpperCase()}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="app-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: '500' }}>
+                    {app.appName}
+                  </div>
+                  <div className="app-usage" style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {app.packageName}
                   </div>
                 </div>
-                <div className="card-value" style={{ fontSize: '1rem' }}>
+                <div className="card-value" style={{ fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
                   {formatBytes(app.totalBytes).full}
                 </div>
               </div>
@@ -114,12 +118,12 @@ export default function DashboardScreen({ dataLimit }) {
   const tot = formatBytes(data.dailyTotal);
   const conn = data.connection;
 
+  const totalPct = limitBytes > 0 ? Math.min((data.dailyTotal / limitBytes) * 100, 100) : 0;
   const mobilePct = limitBytes > 0 ? Math.min((data.dailyMobile / limitBytes) * 100, 100) : 0;
   const wifiPct = limitBytes > 0 ? Math.min((data.dailyWifi / limitBytes) * 100, 100) : 0;
-  const totalPct = limitBytes > 0 ? Math.min((data.dailyTotal / limitBytes) * 100, 100) : 0;
 
   return (
-    <div className="page-container">
+    <div className="page-container" style={{ paddingBottom: 100 }}>
       <div className="flex-between" style={{ paddingBottom: 24 }}>
         <h1 className="page-header" style={{ padding: 0 }}>DATA SYNC</h1>
         <div className="status-pill">
@@ -191,7 +195,7 @@ export default function DashboardScreen({ dataLimit }) {
       <div className="glass" style={{ padding: 0 }}>
         <div className="setting-item-row" style={{ padding: '16px 20px', cursor: 'pointer' }} onClick={openAppsUsage}>
           <div className="setting-item-icon"><Grid size={22} /></div>
-          <div className="setting-item-info">
+          <div className="setting-item-info" style={{ minWidth: 0 }}>
             <div className="setting-label">Apps Usage</div>
             <div className="setting-subtitle">See data used by each app today</div>
           </div>
@@ -200,12 +204,37 @@ export default function DashboardScreen({ dataLimit }) {
         
         <div className="setting-item-row" style={{ padding: '16px 20px', borderBottom: 'none', cursor: 'pointer' }} onClick={openLastMonth}>
           <div className="setting-item-icon"><CalendarDays size={22} /></div>
-          <div className="setting-item-info">
+          <div className="setting-item-info" style={{ minWidth: 0 }}>
             <div className="setting-label">Last Month Usage</div>
             <div className="setting-subtitle">Check your previous billing cycle stats</div>
           </div>
           <div className="setting-item-chevron"><ArrowLeft size={18} style={{ transform: 'rotate(180deg)' }} /></div>
         </div>
+      </div>
+
+      {/* Settings Button at the bottom */}
+      <div style={{ position: 'fixed', bottom: 32, left: 0, right: 0, padding: '0 32px', display: 'flex', justifyContent: 'center' }}>
+        <button 
+          onClick={onOpenSettings}
+          className="glass"
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 12, 
+            padding: '12px 24px', 
+            borderRadius: 30, 
+            border: '1px solid #222',
+            background: 'rgba(10,10,10,0.8)',
+            color: 'var(--text-primary)',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            cursor: 'pointer',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+          }}
+        >
+          <Settings size={20} />
+          SETTINGS
+        </button>
       </div>
 
       <div style={{ height: 40 }} />
