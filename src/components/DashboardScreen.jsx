@@ -125,60 +125,82 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
             </div>
 
             <div className="section-title">DAILY BREAKDOWN (LAST 30 DAYS)</div>
-            <div className="glass" style={{ padding: '32px 20px 16px', height: 260, position: 'relative' }}>
-               <div style={{ position: 'absolute', top: 16, right: 20, fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                 Real-time Stats
-               </div>
-               <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: '100%', width: '100%' }}>
+            <div className="glass" style={{ padding: '32px 24px', marginBottom: 20 }}>
+               <div style={{ height: 200, display: 'flex', alignItems: 'flex-end', gap: 4, position: 'relative', borderBottom: '1px solid var(--border-glass)' }}>
+                  {/* Vertical Grid Lines */}
+                  {[0.25, 0.5, 0.75, 1].map((p, i) => (
+                    <div 
+                      key={i} 
+                      style={{ 
+                        position: 'absolute', 
+                        bottom: `${p * 100}%`, 
+                        left: 0, 
+                        right: 0, 
+                        height: '1px', 
+                        background: 'var(--border-glass)', 
+                        opacity: 0.3,
+                        zIndex: 0 
+                      }} 
+                    />
+                  ))}
+
                   {dailyHistory.map((day, i) => {
                     const date = new Date(day.timestamp);
                     const isToday = i === dailyHistory.length - 1;
-                    const isSunday = date.getDay() === 0;
+                    const hPct = (day.totalBytes / maxVal) * 100;
                     
                     return (
                       <div 
                         key={i} 
+                        className="bar-container"
                         style={{ 
                           flex: 1, 
-                          height: '100%',
-                          display: 'flex',
-                          flexDirection: 'column',
+                          height: '100%', 
+                          display: 'flex', 
+                          flexDirection: 'column', 
                           justifyContent: 'flex-end',
-                          gap: 8,
-                          minWidth: 2
+                          zIndex: 1,
+                          position: 'relative'
                         }}
                       >
                         <div 
+                          className="bar-fill"
                           style={{ 
-                            height: `${(day.totalBytes / maxVal) * 100}%`, 
-                            background: isToday ? 'var(--accent)' : (isSunday ? 'var(--accent-dark)' : 'var(--text-muted)'), 
-                            borderRadius: '3px 3px 0 0',
+                            height: `${Math.max(hPct, 2)}%`, 
+                            background: isToday ? 'var(--accent)' : 'var(--accent-dark)', 
+                            borderRadius: '4px 4px 0 0',
                             width: '100%',
-                            opacity: isToday ? 1 : 0.6,
-                            transition: 'height 0.5s ease'
+                            transition: 'all 0.3s ease',
+                            cursor: 'pointer'
                           }} 
-                          title={`${date.toLocaleDateString()}: ${formatBytes(day.totalBytes).full}`}
+                          onClick={() => alert(`${date.toLocaleDateString()}: ${formatBytes(day.totalBytes).full}`)}
                         />
-                        {/* Only show date labels for every 5th day to avoid clutter */}
-                        {(i % 5 === 0 || isToday) && (
-                           <div style={{ 
-                             fontSize: '0.6rem', 
-                             color: isToday ? 'var(--accent)' : 'var(--text-muted)',
-                             textAlign: 'center',
-                             transform: 'rotate(-45deg)',
-                             whiteSpace: 'nowrap',
-                             marginTop: 4,
-                             height: 20
-                           }}>
-                             {isToday ? 'Today' : `${date.getDate()}/${date.getMonth() + 1}`}
-                           </div>
-                        )}
                       </div>
                     );
                   })}
                </div>
+               
+               {/* Clean X-Axis Labels */}
+               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12, padding: '0 4px' }}>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '500' }}>
+                    {new Date(dailyHistory[0]?.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                  </div>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '500' }}>
+                    {new Date(dailyHistory[Math.floor(dailyHistory.length / 2)]?.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                  </div>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--accent)', fontWeight: '600' }}>
+                    TODAY
+                  </div>
+               </div>
             </div>
-            <div style={{ height: 20 }} />
+
+            <div className="glass" style={{ padding: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+               <div style={{ width: 12, height: 12, borderRadius: 3, background: 'var(--accent)' }} />
+               <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Today's Usage</div>
+               <div style={{ width: 12, height: 12, borderRadius: 3, background: 'var(--accent-dark)', marginLeft: 16 }} />
+               <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Past Days</div>
+            </div>
+            <div style={{ height: 40 }} />
            </>
         )}
       </div>
