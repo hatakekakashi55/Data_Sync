@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight, ArrowLeft, Activity } from 'lucide-react';
-import { requestPermissions, checkPermissions, startNotification, stopNotification, setAutoStart as nativeSetAutoStart, startTracking, stopTracking } from '../services/dataService';
+import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight, ArrowLeft, Activity, ShieldCheck } from 'lucide-react';
+import { requestPermissions, checkPermissions, startNotification, stopNotification, setAutoStart as nativeSetAutoStart, startTracking, stopTracking, openDataSaverSettings } from '../services/dataService';
 
 export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack, onOpenMore }) {
   const [hasPerm, setHasPerm] = useState(false);
@@ -126,6 +126,15 @@ export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack, o
           <div className="setting-item-info">
             <div className="setting-label">Billing Cycle Reset</div>
             <div className="setting-subtitle">1st of every month</div>
+          </div>
+          <div className="setting-item-chevron"><ChevronRight size={18} /></div>
+        </div>
+
+        <div className="setting-item-row" style={{ padding: '16px 20px', cursor: 'pointer' }} onClick={openDataSaverSettings}>
+          <div className="setting-item-icon"><ShieldCheck size={22} color="var(--accent)" /></div>
+          <div className="setting-item-info">
+            <div className="setting-label">Data Saver</div>
+            <div className="setting-subtitle">Massively reduce data usage for all apps</div>
           </div>
           <div className="setting-item-chevron"><ChevronRight size={18} /></div>
         </div>

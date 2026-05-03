@@ -124,26 +124,61 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
                 </div>
             </div>
 
-            <div className="section-title">DAILY BREAKDOWN (30 DAYS)</div>
-            <div className="glass" style={{ padding: 24, height: 200, display: 'flex', alignItems: 'flex-end', gap: 4 }}>
-               {dailyHistory.map((day, i) => (
-                 <div 
-                   key={i} 
-                   style={{ 
-                     flex: 1, 
-                     height: `${(day.totalBytes / maxVal) * 100}%`, 
-                     background: i === dailyHistory.length - 1 ? 'var(--accent)' : 'var(--accent-dark)', 
-                     borderRadius: '2px 2px 0 0',
-                     minWidth: 4
-                   }} 
-                   title={`${new Date(day.timestamp).toLocaleDateString()}: ${formatBytes(day.totalBytes).full}`}
-                 />
-               ))}
+            <div className="section-title">DAILY BREAKDOWN (LAST 30 DAYS)</div>
+            <div className="glass" style={{ padding: '32px 20px 16px', height: 260, position: 'relative' }}>
+               <div style={{ position: 'absolute', top: 16, right: 20, fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                 Real-time Stats
+               </div>
+               <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: '100%', width: '100%' }}>
+                  {dailyHistory.map((day, i) => {
+                    const date = new Date(day.timestamp);
+                    const isToday = i === dailyHistory.length - 1;
+                    const isSunday = date.getDay() === 0;
+                    
+                    return (
+                      <div 
+                        key={i} 
+                        style={{ 
+                          flex: 1, 
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'flex-end',
+                          gap: 8,
+                          minWidth: 2
+                        }}
+                      >
+                        <div 
+                          style={{ 
+                            height: `${(day.totalBytes / maxVal) * 100}%`, 
+                            background: isToday ? 'var(--accent)' : (isSunday ? 'var(--accent-dark)' : 'var(--text-muted)'), 
+                            borderRadius: '3px 3px 0 0',
+                            width: '100%',
+                            opacity: isToday ? 1 : 0.6,
+                            transition: 'height 0.5s ease'
+                          }} 
+                          title={`${date.toLocaleDateString()}: ${formatBytes(day.totalBytes).full}`}
+                        />
+                        {/* Only show date labels for every 5th day to avoid clutter */}
+                        {(i % 5 === 0 || isToday) && (
+                           <div style={{ 
+                             fontSize: '0.6rem', 
+                             color: isToday ? 'var(--accent)' : 'var(--text-muted)',
+                             textAlign: 'center',
+                             transform: 'rotate(-45deg)',
+                             whiteSpace: 'nowrap',
+                             marginTop: 4,
+                             height: 20
+                           }}>
+                             {isToday ? 'Today' : `${date.getDate()}/${date.getMonth() + 1}`}
+                           </div>
+                        )}
+                      </div>
+                    );
+                  })}
+               </div>
             </div>
-            <div className="flex-between" style={{ padding: '8px 4px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                <div>30 days ago</div>
-                <div>Today</div>
-            </div>
+            <div style={{ height: 20 }} />
            </>
         )}
       </div>

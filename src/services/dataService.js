@@ -105,6 +105,14 @@ export const fetchDailyHistory = async () => {
   }
 };
 
+export const openDataSaverSettings = async () => {
+  try {
+    await DataUsage.openDataSaverSettings();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 // Fetch real historical data usage from Android Plugin
 async function fetchNativeUsage() {
   try {

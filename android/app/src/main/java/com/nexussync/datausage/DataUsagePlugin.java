@@ -335,6 +335,26 @@ public class DataUsagePlugin extends Plugin {
     }
 
     @PluginMethod
+    public void openDataSaverSettings(PluginCall call) {
+        try {
+            Intent intent = new Intent("android.settings.DATA_SAVER_SETTINGS");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+            call.resolve();
+        } catch (Exception e) {
+            // Fallback for older Android versions
+            try {
+                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+                call.resolve();
+            } catch (Exception ex) {
+                call.reject("Could not open settings: " + ex.getMessage());
+            }
+        }
+    }
+
+    @PluginMethod
     public void setAutoStart(PluginCall call) {
         try {
             boolean enabled = call.getBoolean("enabled", true);
