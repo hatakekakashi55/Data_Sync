@@ -144,6 +144,120 @@ public class DataUsagePlugin extends Plugin {
     }
 
     @PluginMethod
+    public void getAppUsage(PluginCall call) {
+        if (!hasUsageAccess()) {
+            call.reject("Permission Denied");
+            return;
+        }
+
+        NetworkStatsManager networkStatsManager = (NetworkStatsManager) getContext().getSystemService(Context.NETWORK_STATS_SERVICE);
+        android.content.pm.PackageManager pm = getContext().getPackageManager();
+        
+        Calendar calendar = Calendar.getInstance();
+        long now = calendar.getTimeInMillis();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long startOfDay = calendar.getTimeInMillis();
+
+        com.getcapacitor.JSArray appsArray = new com.getcapacitor.JSArray();
+        java.util.HashMap<Integer, Long> uidUsageMap = new java.util.HashMap<>();
+
+        try {
+            // Mobile Data per App
+            NetworkStats mobileStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_MOBILE, null, startOfDay, now);
+            NetworkStats.Bucket bucket = new NetworkStats.Bucket();
+            while (mobileStats.hasNextBucket()) {
+                mobileStats.getNextBucket(bucket);
+                int uid = bucket.getUid();
+                long bytes = bucket.getRxBytes() + bucket.getTxBytes();
+                uidUsageMap.put(uid, uidUsageMap.getOrDefault(uid, 0L) + bytes);
+            }
+            
+            // WiFi Data per App
+            NetworkStats wifiStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_WIFI, null, startOfDay, now);
+            while (wifiStats.hasNextBucket()) {
+                wifiStats.getNextBucket(bucket);
+                int uid = bucket.getUid();
+                long bytes = bucket.getRxBytes() + bucket.getTxBytes();
+                uidUsageMap.put(uid, uidUsageMap.getOrDefault(uid, 0L) + bytes);
+            }
+
+            for (java.util.Map.Entry<Integer, Long> entry : uidUsageMap.entrySet()) {
+                int uid = entry.getKey();
+                long totalBytes = entry.getValue();
+                
+                if (totalBytes > 0) {
+                    String[] packages = pm.getPackagesForUid(uid);
+                    if (packages != null && packages.length > 0) {
+                        try {
+                            android.content.pm.ApplicationInfo appInfo = pm.getApplicationInfo(packages[0], 0);
+                            String appName = pm.getApplicationLabel(appInfo).toString();
+                            
+                            JSObject appObj = new JSObject();
+                            appObj.put("uid", uid);
+                            appObj.put("packageName", packages[0]);
+                            appObj.put("appName", appName);
+                            appObj.put("totalBytes", totalBytes);
+                            appsArray.put(appObj);
+                        } catch (Exception e) {}
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            call.reject("Error querying app stats: " + e.getMessage());
+            return;
+        }
+
+        JSObject ret = new JSObject();
+        ret.put("apps", appsArray);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void getLastMonthUsage(PluginCall call) {
+        if (!hasUsageAccess()) {
+            call.reject("Permission Denied");
+            return;
+        }
+
+        NetworkStatsManager networkStatsManager = (NetworkStatsManager) getContext().getSystemService(Context.NETWORK_STATS_SERVICE);
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        
+        long endOfLastMonth = calendar.getTimeInMillis();
+        calendar.add(Calendar.MONTH, -1);
+        long startOfLastMonth = calendar.getTimeInMillis();
+
+        long mobileBytes = 0;
+        long wifiBytes = 0;
+
+        try {
+            NetworkStats.Bucket mobile = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE, null, startOfLastMonth, endOfLastMonth);
+            mobileBytes = mobile.getRxBytes() + mobile.getTxBytes();
+            
+            NetworkStats.Bucket wifi = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_WIFI, null, startOfLastMonth, endOfLastMonth);
+            wifiBytes = wifi.getRxBytes() + wifi.getTxBytes();
+        } catch (Exception e) {
+            call.reject("Failed: " + e.getMessage());
+            return;
+        }
+
+        JSObject ret = new JSObject();
+        ret.put("mobileBytes", mobileBytes);
+        ret.put("wifiBytes", wifiBytes);
+        ret.put("totalBytes", mobileBytes + wifiBytes);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
     public void setAutoStart(PluginCall call) {
         try {
             boolean enabled = call.getBoolean("enabled", true);

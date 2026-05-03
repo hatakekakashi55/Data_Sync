@@ -75,6 +75,25 @@ export async function setAutoStart(enabled) {
   }
 }
 
+export async function fetchAppUsage() {
+  try {
+    const res = await DataUsage.getAppUsage();
+    return res.apps || [];
+  } catch (e) {
+    console.warn("Could not fetch app usage", e);
+    return [];
+  }
+}
+
+export async function fetchLastMonthUsage() {
+  try {
+    return await DataUsage.getLastMonthUsage();
+  } catch (e) {
+    console.warn("Could not fetch last month usage", e);
+    return null;
+  }
+}
+
 // Fetch real historical data usage from Android Plugin
 async function fetchNativeUsage() {
   try {
