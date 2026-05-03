@@ -1,20 +1,20 @@
-/* ===== DATA SYNC — Pure System ===== */
+/* ===== DATA SYNC — Professional Midnight Palette ===== */
 :root {
-  --bg-primary: #000000;
-  --bg-secondary: #080808;
-  --bg-card: #0A0A0A;
-  --bg-card-hover: #121212;
+  --bg-primary: #0F172A;
+  --bg-secondary: #0B1120;
+  --bg-card: #1E293B;
+  --bg-card-hover: #2D3748;
   
-  --accent: #555555;
-  --accent-dim: #1A1A1A;
-  --accent-dark: #333333;
-  --accent-dark-dim: #0F0F0F;
+  --accent: #2DD4BF;
+  --accent-dim: rgba(45, 212, 191, 0.1);
+  --accent-dark: #0D9488;
+  --accent-dark-dim: #134E4A;
   
-  --text-primary: #CCCCCC;
-  --text-secondary: #888888;
-  --text-muted: #555555;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
   
-  --border-glass: #1A1A1A;
+  --border-glass: rgba(255, 255, 255, 0.05);
   
   --radius: 20px;
   --radius-sm: 12px;
@@ -145,7 +145,7 @@ body {
   border-radius: 3px; overflow: hidden; margin-top: 16px;
 }
 .progress-fill {
-  height: 100%; background: var(--text-secondary);
+  height: 100%; background: var(--accent);
   border-radius: 3px; transition: width 0.5s ease;
 }
 
@@ -160,7 +160,7 @@ body {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--text-muted);
 }
-.status-dot.active { background: var(--text-primary); }
+.status-dot.active { background: var(--accent); }
 
 /* ===== Settings ===== */
 .setting-row {
@@ -205,7 +205,7 @@ body {
   background: var(--bg-primary); border: 1px solid var(--border-glass);
   position: relative; transition: all 0.3s; cursor: pointer;
 }
-.toggle-track.on { background: var(--text-primary); border-color: var(--text-primary); }
+.toggle-track.on { background: var(--accent); border-color: var(--accent); }
 .toggle-knob {
   width: 18px; height: 18px; border-radius: 50%;
   background: var(--text-secondary);
@@ -223,7 +223,7 @@ body {
 .slider-input::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 16px; height: 16px; border-radius: 50%;
-  background: var(--text-primary); cursor: pointer;
+  background: var(--accent); cursor: pointer;
 }
 
 @media (max-width: 400px) {
