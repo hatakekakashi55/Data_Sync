@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight, ArrowLeft } from 'lucide-react';
-import { requestPermissions, checkPermissions, startNotification, stopNotification, setAutoStart as nativeSetAutoStart } from '../services/dataService';
+import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight, ArrowLeft, Activity } from 'lucide-react';
+import { requestPermissions, checkPermissions, startNotification, stopNotification, setAutoStart as nativeSetAutoStart, startTracking, stopTracking } from '../services/dataService';
 
 export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack, onOpenMore }) {
   const [hasPerm, setHasPerm] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(localStorage.getItem('notifEnabled') !== 'false');
   const [autoStart, setAutoStart] = useState(localStorage.getItem('autoStart') !== 'false');
+  const [serviceRunning, setServiceRunning] = useState(localStorage.getItem('serviceRunning') !== 'false');
 
   useEffect(() => {
     checkPermissions().then(setHasPerm);
@@ -19,7 +20,7 @@ export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack, o
     const val = !notifEnabled;
     setNotifEnabled(val);
     localStorage.setItem('notifEnabled', val);
-    if (val) startNotification();
+    if (val && serviceRunning) startNotification();
     else stopNotification();
   };
 
@@ -30,12 +31,41 @@ export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack, o
     nativeSetAutoStart(val);
   };
 
+  const toggleService = () => {
+    const val = !serviceRunning;
+    setServiceRunning(val);
+    localStorage.setItem('serviceRunning', val);
+    if (val) {
+      startNotification();
+      startTracking();
+    } else {
+      stopNotification();
+      stopTracking();
+    }
+  };
+
   return (
     <div className="page-container">
       <div className="flex-between" style={{ paddingBottom: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <ArrowLeft onClick={onBack} style={{ cursor: 'pointer' }} />
           <h1 className="page-header" style={{ padding: 0 }}>SETTINGS</h1>
+        </div>
+      </div>
+
+      <div className="section-title">SERVICE STATUS</div>
+      <div className="glass" style={{ padding: 0 }}>
+        <div className="setting-item-row" style={{ padding: '16px 20px' }} onClick={toggleService}>
+          <div className="setting-item-icon">
+             <Activity size={22} color={serviceRunning ? 'var(--accent)' : 'var(--text-muted)'} />
+          </div>
+          <div className="setting-item-info">
+            <div className="setting-label">Service Running</div>
+            <div className="setting-subtitle">{serviceRunning ? 'Tracking is active' : 'Tracking is paused'}</div>
+          </div>
+          <div className={`toggle-track ${serviceRunning ? 'on' : ''}`}>
+            <div className="toggle-knob" />
+          </div>
         </div>
       </div>
       <div className="section-title">DATA LIMITS</div>

@@ -14,7 +14,7 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
   useEffect(() => {
     if (!startedRef.current) {
       startTracking();
-      if (localStorage.getItem('notifEnabled') !== 'false') {
+      if (localStorage.getItem('notifEnabled') !== 'false' && localStorage.getItem('serviceRunning') !== 'false') {
         setTimeout(startNotification, 2000);
       }
       startedRef.current = true;
