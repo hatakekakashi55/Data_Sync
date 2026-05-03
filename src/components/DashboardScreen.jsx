@@ -9,7 +9,9 @@ export default function DashboardScreen({ dataLimit }) {
   useEffect(() => {
     if (!startedRef.current) {
       startTracking();
-      setTimeout(startNotification, 2000);
+      if (localStorage.getItem('notifEnabled') !== 'false') {
+        setTimeout(startNotification, 2000);
+      }
       startedRef.current = true;
     }
     const unsub = subscribe((snap) => {

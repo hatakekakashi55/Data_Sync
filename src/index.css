@@ -181,6 +181,33 @@ body {
 .empty-state { text-align: center; padding: 32px; color: var(--text-muted); font-size: 0.9rem; }
 .flex-between { display: flex; justify-content: space-between; align-items: center; }
 
+/* ===== Custom Toggles ===== */
+.toggle-track {
+  width: 44px; height: 24px; border-radius: 12px;
+  background: var(--bg-primary); border: 1px solid var(--border-glass);
+  position: relative; transition: all 0.3s; cursor: pointer;
+}
+.toggle-track.on { background: var(--text-primary); border-color: var(--text-primary); }
+.toggle-knob {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--text-secondary);
+  position: absolute; top: 2px; left: 2px;
+  transition: all 0.3s;
+}
+.toggle-track.on .toggle-knob { left: 22px; background: var(--bg-primary); }
+
+/* ===== Custom Slider ===== */
+.slider-input {
+  width: 100%; -webkit-appearance: none; appearance: none;
+  height: 4px; background: var(--bg-primary); border-radius: 2px;
+  outline: none; opacity: 0.8; transition: opacity .2s;
+}
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--text-primary); cursor: pointer;
+}
+
 @media (max-width: 400px) {
   .page-container { padding: 16px; }
   .data-large { font-size: 2.8rem; }

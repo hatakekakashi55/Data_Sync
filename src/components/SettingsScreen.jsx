@@ -1,92 +1,108 @@
-import { useState } from 'react';
-import { Trash2, Info, Wifi, ChevronRight } from 'lucide-react';
-import { formatBytes, getUsageSnapshot } from '../services/dataService';
-
-function Toggle({ value, onChange }) {
-  return (
-    <button className={`toggle-track ${value ? 'on' : ''}`} onClick={() => onChange(!value)} aria-label="Toggle">
-      <span className="toggle-knob" />
-    </button>
-  );
-}
+import { useState, useEffect } from 'react';
+import { Bell, HardDrive, Smartphone, RefreshCw, Power, ShieldAlert, ChevronRight } from 'lucide-react';
+import { requestPermissions, checkPermissions, startNotification, stopNotification, setAutoStart as nativeSetAutoStart } from '../services/dataService';
 
 export default function SettingsScreen({ dataLimit, onDataLimitChange }) {
-  const [notifications, setNotifications] = useState(true);
-  const [bgTracking, setBgTracking] = useState(true);
-  const snap = getUsageSnapshot();
+  const [hasPerm, setHasPerm] = useState(false);
+  const [notifEnabled, setNotifEnabled] = useState(localStorage.getItem('notifEnabled') !== 'false');
+  const [autoStart, setAutoStart] = useState(localStorage.getItem('autoStart') !== 'false');
+
+  useEffect(() => {
+    checkPermissions().then(setHasPerm);
+  }, []);
+
+  const handleLimitChange = (e) => {
+    onDataLimitChange(parseFloat(e.target.value));
+  };
+
+  const toggleNotif = async () => {
+    const val = !notifEnabled;
+    setNotifEnabled(val);
+    localStorage.setItem('notifEnabled', val);
+    if (val) startNotification();
+    else stopNotification();
+  };
+
+  const toggleAutoStart = () => {
+    const val = !autoStart;
+    setAutoStart(val);
+    localStorage.setItem('autoStart', val);
+    nativeSetAutoStart(val);
+  };
 
   return (
     <div className="page-container">
-      <h1 className="page-header">C O N F I G U R A T I O N</h1>
+      <h1 className="page-header">SETTINGS</h1>
 
-      {/* Limits */}
-      <div className="settings-section-title">LIMITS</div>
+      <div className="section-title">DATA LIMITS</div>
       <div className="glass" style={{ padding: 0 }}>
-        <div className="setting-row">
-          <span className="setting-label">Daily Data Limit</span>
-          <span className="setting-value">{dataLimit.toFixed(1)} GB</span>
-        </div>
-        <div className="slider-container">
-          <input
-            type="range"
-            className="slider-input"
-            min="0.5"
-            max="10"
-            step="0.5"
-            value={dataLimit}
-            onChange={(e) => onDataLimitChange(parseFloat(e.target.value))}
-          />
-        </div>
-      </div>
-
-      {/* Preferences */}
-      <div className="settings-section-title">PREFERENCES</div>
-      <div className="glass" style={{ padding: 0 }}>
-        <div className="setting-row">
-          <span className="setting-label">Push Notifications</span>
-          <Toggle value={notifications} onChange={setNotifications} />
-        </div>
-        <div className="setting-row">
-          <span className="setting-label">Background Tracking</span>
-          <Toggle value={bgTracking} onChange={setBgTracking} />
-        </div>
-        <div className="setting-item-row">
-          <div className="setting-item-icon"><Wifi /></div>
+        <div className="setting-item-row" style={{ padding: '16px 20px', borderBottom: 'none' }}>
+          <div className="setting-item-icon"><HardDrive size={22} /></div>
           <div className="setting-item-info">
-            <div className="setting-label">Network Mode</div>
-            <div className="setting-subtitle">Auto-Optimize</div>
+            <div className="setting-label">Daily Data Warning</div>
+            <div className="setting-subtitle">Alert at {dataLimit.toFixed(1)} GB</div>
           </div>
-          <div className="setting-item-chevron"><ChevronRight /></div>
+          <div className="setting-value">{dataLimit.toFixed(1)} GB</div>
+        </div>
+        <div className="slider-container" style={{ padding: '0 20px 20px' }}>
+          <input type="range" min="0.5" max="10.0" step="0.5" value={dataLimit} onChange={handleLimitChange} className="slider-input" />
         </div>
       </div>
 
-      {/* Usage Info */}
-      <div className="settings-section-title">USAGE ACCESS</div>
+      <div className="section-title">NOTIFICATION & DISPLAY</div>
       <div className="glass" style={{ padding: 0 }}>
-        <div className="setting-row">
-          <span className="setting-label">Historical Tracking</span>
-          <span className="setting-value" style={{ color: snap.hasPermission ? 'var(--text-primary)' : '#555' }}>{snap.hasPermission ? 'Granted' : 'Denied'}</span>
+        <div className="setting-item-row" style={{ padding: '16px 20px' }} onClick={toggleNotif}>
+          <div className="setting-item-icon"><Bell size={22} /></div>
+          <div className="setting-item-info">
+            <div className="setting-label">Status Bar Notification</div>
+            <div className="setting-subtitle">Show live data usage in drawer</div>
+          </div>
+          <div className={`toggle-track ${notifEnabled ? 'on' : ''}`}>
+            <div className="toggle-knob" />
+          </div>
         </div>
-        <div className="setting-row">
-          <span className="setting-label">Connection Type</span>
-          <span className="setting-value">{snap.connection.effectiveType?.toUpperCase() || 'N/A'}</span>
-        </div>
-        <div className="setting-row">
-          <span className="setting-label">Downlink Speed</span>
-          <span className="setting-value">{snap.connection.downlink ? `${snap.connection.downlink} Mbps` : 'N/A'}</span>
+        
+        <div className="setting-item-row" style={{ padding: '16px 20px' }} onClick={toggleAutoStart}>
+          <div className="setting-item-icon"><Power size={22} /></div>
+          <div className="setting-item-info">
+            <div className="setting-label">Auto Start on Boot</div>
+            <div className="setting-subtitle">Start tracking when phone turns on</div>
+          </div>
+          <div className={`toggle-track ${autoStart ? 'on' : ''}`}>
+            <div className="toggle-knob" />
+          </div>
         </div>
       </div>
 
-      {/* System */}
-      <div className="settings-section-title">SYSTEM</div>
+      <div className="section-title">SYSTEM PREFERENCES</div>
       <div className="glass" style={{ padding: 0 }}>
-        <div className="setting-item-row">
-          <div className="setting-item-icon"><Info /></div>
+        <div className="setting-item-row" style={{ padding: '16px 20px' }} onClick={!hasPerm ? requestPermissions : undefined}>
+          <div className="setting-item-icon"><ShieldAlert size={22} /></div>
+          <div className="setting-item-info">
+            <div className="setting-label">Usage Access Permission</div>
+            <div className="setting-subtitle">{hasPerm ? 'Granted for historical tracking' : 'Required for accurate tracking'}</div>
+          </div>
+          <div className="setting-value" style={{ color: hasPerm ? 'var(--text-primary)' : '#555' }}>
+            {hasPerm ? 'Active' : 'Missing'}
+          </div>
+        </div>
+        
+        <div className="setting-item-row" style={{ padding: '16px 20px' }}>
+          <div className="setting-item-icon"><RefreshCw size={22} /></div>
+          <div className="setting-item-info">
+            <div className="setting-label">Billing Cycle Reset</div>
+            <div className="setting-subtitle">1st of every month</div>
+          </div>
+          <div className="setting-item-chevron"><ChevronRight size={18} /></div>
+        </div>
+
+        <div className="setting-item-row" style={{ padding: '16px 20px' }}>
+          <div className="setting-item-icon"><Smartphone size={22} /></div>
           <div className="setting-item-info">
             <div className="setting-label">About Data Sync</div>
-            <div className="setting-subtitle">v3.0.0 — Daily/Monthly Tracker</div>
+            <div className="setting-subtitle">v3.5.0 — Monochrome Edition</div>
           </div>
-          <div className="setting-item-chevron"><ChevronRight /></div>
+          <div className="setting-item-chevron"><ChevronRight size={18} /></div>
         </div>
       </div>
 

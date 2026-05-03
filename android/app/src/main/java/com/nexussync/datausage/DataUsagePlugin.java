@@ -142,4 +142,16 @@ public class DataUsagePlugin extends Plugin {
             call.reject("Could not stop notification service: " + e.getMessage());
         }
     }
+
+    @PluginMethod
+    public void setAutoStart(PluginCall call) {
+        try {
+            boolean enabled = call.getBoolean("enabled", true);
+            android.content.SharedPreferences prefs = getContext().getSharedPreferences("DataSyncPrefs", Context.MODE_PRIVATE);
+            prefs.edit().putBoolean("autoStart", enabled).apply();
+            call.resolve();
+        } catch (Exception e) {
+            call.reject("Error setting auto start: " + e.getMessage());
+        }
+    }
 }

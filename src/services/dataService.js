@@ -59,6 +59,22 @@ export async function startNotification() {
   }
 }
 
+export async function stopNotification() {
+  try {
+    await DataUsage.stopNotificationService();
+  } catch (e) {
+    console.warn("Could not stop notification", e);
+  }
+}
+
+export async function setAutoStart(enabled) {
+  try {
+    await DataUsage.setAutoStart({ enabled });
+  } catch (e) {
+    console.warn("Could not set auto start", e);
+  }
+}
+
 // Fetch real historical data usage from Android Plugin
 async function fetchNativeUsage() {
   try {
