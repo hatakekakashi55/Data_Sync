@@ -50,7 +50,7 @@ export default function MoreScreen({ theme, onThemeToggle, onBack }) {
 
       <div className="section-title">COMMUNITY</div>
       <div className="glass" style={{ padding: 0 }}>
-        <div className="setting-item-row" style={{ padding: '16px 20px' }}>
+        <div className="setting-item-row" style={{ padding: '16px 20px', cursor: 'pointer' }} onClick={() => window.location.href = 'mailto:support@codedth.com?subject=Data Sync Feedback'}>
           <div className="setting-item-icon"><MessageSquare size={22} /></div>
           <div className="setting-item-info">
             <div className="setting-label">Send Feedback</div>
@@ -58,7 +58,7 @@ export default function MoreScreen({ theme, onThemeToggle, onBack }) {
           </div>
         </div>
         
-        <div className="setting-item-row" style={{ padding: '16px 20px', borderBottom: 'none' }}>
+        <div className="setting-item-row" style={{ padding: '16px 20px', borderBottom: 'none', cursor: 'pointer' }} onClick={() => alert("Privacy Policy: Data Sync does not collect, store, or share your network usage data. All tracking is performed locally on your device for your own awareness.")}>
           <div className="setting-item-icon"><ShieldCheck size={22} /></div>
           <div className="setting-item-info">
             <div className="setting-label">Privacy Policy</div>

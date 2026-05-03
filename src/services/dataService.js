@@ -85,14 +85,25 @@ export async function fetchAppUsage() {
   }
 }
 
-export async function fetchLastMonthUsage() {
+export const fetchLastMonthUsage = async () => {
   try {
-    return await DataUsage.getLastMonthUsage();
+    const res = await DataUsage.getLastMonthUsage();
+    return res;
   } catch (e) {
-    console.warn("Could not fetch last month usage", e);
+    console.error(e);
     return null;
   }
-}
+};
+
+export const fetchDailyHistory = async () => {
+  try {
+    const res = await DataUsage.getDailyHistory();
+    return res.history || [];
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+};
 
 // Fetch real historical data usage from Android Plugin
 async function fetchNativeUsage() {

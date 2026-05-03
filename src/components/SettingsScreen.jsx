@@ -91,7 +91,7 @@ export default function SettingsScreen({ dataLimit, onDataLimitChange, onBack, o
           </div>
         </div>
         
-        <div className="setting-item-row" style={{ padding: '16px 20px' }}>
+        <div className="setting-item-row" style={{ padding: '16px 20px', cursor: 'pointer' }} onClick={() => alert("Billing Cycle is currently fixed to the 1st of every month. Custom billing dates will be added in a future update.")}>
           <div className="setting-item-icon"><RefreshCw size={22} /></div>
           <div className="setting-item-info">
             <div className="setting-label">Billing Cycle Reset</div>

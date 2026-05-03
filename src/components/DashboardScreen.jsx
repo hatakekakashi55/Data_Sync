@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { Wifi, Smartphone, AlertTriangle, Activity, Grid, CalendarDays, ArrowLeft, Settings } from 'lucide-react';
-import { subscribe, startTracking, formatBytes, getUsageSnapshot, requestPermissions, startNotification, fetchAppUsage, fetchLastMonthUsage } from '../services/dataService';
+import { subscribe, startTracking, formatBytes, getUsageSnapshot, requestPermissions, startNotification, fetchAppUsage, fetchLastMonthUsage, fetchDailyHistory } from '../services/dataService';
 
 export default function DashboardScreen({ dataLimit, onOpenSettings }) {
   const [data, setData] = useState(getUsageSnapshot());
   const [viewState, setViewState] = useState('dashboard'); // 'dashboard', 'apps', 'lastMonth'
   const [appsData, setAppsData] = useState([]);
   const [lastMonthData, setLastMonthData] = useState(null);
+  const [dailyHistory, setDailyHistory] = useState([]);
   
   const startedRef = useRef(false);
 
@@ -27,15 +28,17 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
   const openAppsUsage = async () => {
     setViewState('apps');
     const apps = await fetchAppUsage();
-    // Sort by usage descending
-    apps.sort((a, b) => b.totalBytes - a.totalBytes);
     setAppsData(apps);
   };
 
   const openLastMonth = async () => {
     setViewState('lastMonth');
-    const lm = await fetchLastMonthUsage();
+    const [lm, history] = await Promise.all([
+      fetchLastMonthUsage(),
+      fetchDailyHistory()
+    ]);
     setLastMonthData(lm);
+    setDailyHistory(history.reverse()); // Show chronological
   };
 
   if (viewState === 'apps') {
@@ -53,9 +56,17 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
           ) : (
             appsData.map((app, i) => (
               <div className="app-item" key={i} style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
-                <div className="app-icon" style={{ minWidth: 40, height: 40, borderRadius: 8, background: 'var(--accent-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>
-                  {app.appName.charAt(0).toUpperCase()}
-                </div>
+                {app.iconBase64 ? (
+                  <img 
+                    src={app.iconBase64} 
+                    alt="" 
+                    style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'contain' }} 
+                  />
+                ) : (
+                  <div className="app-icon" style={{ minWidth: 40, height: 40, borderRadius: 8, background: 'var(--accent-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-muted)' }}>
+                    {app.appName.charAt(0).toUpperCase()}
+                  </div>
+                )}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="app-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: '500' }}>
                     {app.appName}
@@ -76,6 +87,8 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
   }
 
   if (viewState === 'lastMonth') {
+    const maxVal = Math.max(...dailyHistory.map(d => d.totalBytes), 1);
+    
     return (
       <div className="page-container">
         <div className="flex-between" style={{ paddingBottom: 24 }}>
@@ -87,28 +100,51 @@ export default function DashboardScreen({ dataLimit, onOpenSettings }) {
         {!lastMonthData ? (
            <div className="empty-state">Loading data...</div>
         ) : (
-           <div className="glass" style={{ padding: 24 }}>
-              <div style={{ textAlign: 'center', marginBottom: 32 }}>
-                <div className="card-label">TOTAL LAST MONTH</div>
-                <div className="data-large">{formatBytes(lastMonthData.totalBytes).value} <span className="data-unit">{formatBytes(lastMonthData.totalBytes).unit}</span></div>
-              </div>
-              <div className="stats-grid">
-                <div className="glass" style={{ padding: 16, background: 'var(--bg-secondary)', borderColor: 'var(--border-glass)' }}>
-                  <div className="flex-between" style={{ marginBottom: 12 }}>
-                    <div className="card-label" style={{ margin: 0 }}>MOBILE</div>
-                    <Smartphone size={16} color="var(--text-muted)" />
-                  </div>
-                  <div className="card-value" style={{ fontSize: '1.2rem' }}>{formatBytes(lastMonthData.mobileBytes).full}</div>
+           <>
+            <div className="glass" style={{ padding: 24, marginBottom: 24 }}>
+                <div style={{ textAlign: 'center', marginBottom: 32 }}>
+                  <div className="card-label">TOTAL LAST MONTH</div>
+                  <div className="data-large">{formatBytes(lastMonthData.totalBytes).value} <span className="data-unit">{formatBytes(lastMonthData.totalBytes).unit}</span></div>
                 </div>
-                <div className="glass" style={{ padding: 16, background: 'var(--bg-secondary)', borderColor: 'var(--border-glass)' }}>
-                  <div className="flex-between" style={{ marginBottom: 12 }}>
-                    <div className="card-label" style={{ margin: 0 }}>WI-FI</div>
-                    <Wifi size={16} color="var(--text-muted)" />
+                <div className="stats-grid">
+                  <div className="glass" style={{ padding: 16, background: 'var(--bg-secondary)', borderColor: 'var(--border-glass)' }}>
+                    <div className="flex-between" style={{ marginBottom: 12 }}>
+                      <div className="card-label" style={{ margin: 0 }}>MOBILE</div>
+                      <Smartphone size={16} color="var(--text-muted)" />
+                    </div>
+                    <div className="card-value" style={{ fontSize: '1.2rem' }}>{formatBytes(lastMonthData.mobileBytes).full}</div>
                   </div>
-                  <div className="card-value" style={{ fontSize: '1.2rem' }}>{formatBytes(lastMonthData.wifiBytes).full}</div>
+                  <div className="glass" style={{ padding: 16, background: 'var(--bg-secondary)', borderColor: 'var(--border-glass)' }}>
+                    <div className="flex-between" style={{ marginBottom: 12 }}>
+                      <div className="card-label" style={{ margin: 0 }}>WI-FI</div>
+                      <Wifi size={16} color="var(--text-muted)" />
+                    </div>
+                    <div className="card-value" style={{ fontSize: '1.2rem' }}>{formatBytes(lastMonthData.wifiBytes).full}</div>
+                  </div>
                 </div>
-              </div>
-           </div>
+            </div>
+
+            <div className="section-title">DAILY BREAKDOWN (30 DAYS)</div>
+            <div className="glass" style={{ padding: 24, height: 200, display: 'flex', alignItems: 'flex-end', gap: 4 }}>
+               {dailyHistory.map((day, i) => (
+                 <div 
+                   key={i} 
+                   style={{ 
+                     flex: 1, 
+                     height: `${(day.totalBytes / maxVal) * 100}%`, 
+                     background: i === dailyHistory.length - 1 ? 'var(--accent)' : 'var(--accent-dark)', 
+                     borderRadius: '2px 2px 0 0',
+                     minWidth: 4
+                   }} 
+                   title={`${new Date(day.timestamp).toLocaleDateString()}: ${formatBytes(day.totalBytes).full}`}
+                 />
+               ))}
+            </div>
+            <div className="flex-between" style={{ padding: '8px 4px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                <div>30 days ago</div>
+                <div>Today</div>
+            </div>
+           </>
         )}
       </div>
     );

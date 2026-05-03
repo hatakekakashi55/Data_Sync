@@ -165,7 +165,6 @@ public class DataUsagePlugin extends Plugin {
         java.util.HashMap<Integer, Long> uidUsageMap = new java.util.HashMap<>();
 
         try {
-            // Mobile Data per App
             NetworkStats mobileStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_MOBILE, null, startOfDay, now);
             NetworkStats.Bucket bucket = new NetworkStats.Bucket();
             while (mobileStats.hasNextBucket()) {
@@ -175,7 +174,6 @@ public class DataUsagePlugin extends Plugin {
                 uidUsageMap.put(uid, uidUsageMap.getOrDefault(uid, 0L) + bytes);
             }
             
-            // WiFi Data per App
             NetworkStats wifiStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_WIFI, null, startOfDay, now);
             while (wifiStats.hasNextBucket()) {
                 wifiStats.getNextBucket(bucket);
@@ -184,7 +182,13 @@ public class DataUsagePlugin extends Plugin {
                 uidUsageMap.put(uid, uidUsageMap.getOrDefault(uid, 0L) + bytes);
             }
 
-            for (java.util.Map.Entry<Integer, Long> entry : uidUsageMap.entrySet()) {
+            // List to sort
+            java.util.List<java.util.Map.Entry<Integer, Long>> list = new java.util.ArrayList<>(uidUsageMap.entrySet());
+            list.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+
+            int count = 0;
+            for (java.util.Map.Entry<Integer, Long> entry : list) {
+                if (count > 50) break; // Limit to top 50 apps for performance
                 int uid = entry.getKey();
                 long totalBytes = entry.getValue();
                 
@@ -200,7 +204,29 @@ public class DataUsagePlugin extends Plugin {
                             appObj.put("packageName", packages[0]);
                             appObj.put("appName", appName);
                             appObj.put("totalBytes", totalBytes);
+
+                            // Get Icon as Base64 (only for top 30 to avoid excessive JS size)
+                            if (count < 30) {
+                                try {
+                                    android.graphics.drawable.Drawable icon = pm.getApplicationIcon(appInfo);
+                                    android.graphics.Bitmap bitmap;
+                                    if (icon instanceof android.graphics.drawable.BitmapDrawable) {
+                                        bitmap = ((android.graphics.drawable.BitmapDrawable)icon).getBitmap();
+                                    } else {
+                                        bitmap = android.graphics.Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), android.graphics.Bitmap.Config.ARGB_8888);
+                                        android.graphics.Canvas canvas = new android.graphics.Canvas(bitmap);
+                                        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                                        icon.draw(canvas);
+                                    }
+                                    java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+                                    bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, outputStream);
+                                    String base64 = android.util.Base64.encodeToString(outputStream.toByteArray(), android.util.Base64.DEFAULT);
+                                    appObj.put("iconBase64", "data:image/png;base64," + base64);
+                                } catch (Exception iconEx) {}
+                            }
+                            
                             appsArray.put(appObj);
+                            count++;
                         } catch (Exception e) {}
                     }
                 }
@@ -213,6 +239,57 @@ public class DataUsagePlugin extends Plugin {
 
         JSObject ret = new JSObject();
         ret.put("apps", appsArray);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void getDailyHistory(PluginCall call) {
+        if (!hasUsageAccess()) {
+            call.reject("Permission Denied");
+            return;
+        }
+
+        NetworkStatsManager networkStatsManager = (NetworkStatsManager) getContext().getSystemService(Context.NETWORK_STATS_SERVICE);
+        com.getcapacitor.JSArray historyArray = new com.getcapacitor.JSArray();
+        
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            
+            for (int i = 0; i < 30; i++) {
+                long endOfDay = cal.getTimeInMillis() + (24 * 60 * 60 * 1000) - 1;
+                long startOfDay = cal.getTimeInMillis();
+                
+                long mobileBytes = 0;
+                long wifiBytes = 0;
+                
+                try {
+                    NetworkStats.Bucket mobile = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE, null, startOfDay, endOfDay);
+                    mobileBytes = mobile.getRxBytes() + mobile.getTxBytes();
+                    
+                    NetworkStats.Bucket wifi = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_WIFI, null, startOfDay, endOfDay);
+                    wifiBytes = wifi.getRxBytes() + wifi.getTxBytes();
+                } catch (Exception e) {}
+                
+                JSObject dayObj = new JSObject();
+                dayObj.put("timestamp", startOfDay);
+                dayObj.put("mobileBytes", mobileBytes);
+                dayObj.put("wifiBytes", wifiBytes);
+                dayObj.put("totalBytes", mobileBytes + wifiBytes);
+                historyArray.put(dayObj);
+                
+                cal.add(Calendar.DAY_OF_YEAR, -1);
+            }
+        } catch (Exception e) {
+            call.reject("Failed: " + e.getMessage());
+            return;
+        }
+
+        JSObject ret = new JSObject();
+        ret.put("history", historyArray);
         call.resolve(ret);
     }
 
