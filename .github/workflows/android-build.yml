@@ -61,10 +61,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v4.0.0
+          target_commitish: ${{ github.sha }}
           name: "Data Sync v4.0.0 — Native Kotlin & Jetpack Compose"
           body: |
             Native Kotlin & Jetpack Compose (Material 3) build of **Data Sync** (`com.nexussync.datausage`).
-            - `DataSync-v4.0.0-release.apk` — R8-minified, resource-shrunk, ready-to-install APK (~1.4 MB)
+            - `DataSync-v4.0.0-release.apk` — R8-minified, resource-shrunk, ready-to-install APK (~1.5 MB)
             - `DataSync-v4.0.0-debug.apk` — Full debuggable APK
           prerelease: false
           files: |

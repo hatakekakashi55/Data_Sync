@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="100%" height="340" role="img" aria-label="Data Sync Clean Architecture Animated Flow">
+  <defs>
+    <linearGradient id="archBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090D16" />
+      <stop offset="100%" stop-color="#0E1729" />
+    </linearGradient>
+
+    <style>
+      .font-sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, Helvetica, Arial, sans-serif; }
+      .font-mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+
+      @keyframes dashFlow {
+        to { stroke-dashoffset: -28; }
+      }
+      .connector-line {
+        stroke-dasharray: 6 8;
+        animation: dashFlow 1.4s linear infinite;
+      }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="340" rx="20" fill="url(#archBg)" stroke="#1E2D45" stroke-width="1.5" />
+
+  <!-- Section Title -->
+  <text x="40" y="40" class="font-mono" font-size="11.5" font-weight="600" letter-spacing="1.4" fill="#2DD4BF">REACTIVE CLEAN ARCHITECTURE &amp; UNIDIRECTIONAL DATA FLOW</text>
+  <text x="1160" y="40" text-anchor="end" class="font-mono" font-size="11" fill="#64748B">ZERO WEBVIEWS • COROUTINES &amp; STATEFLOW</text>
+  <line x1="40" y1="56" x2="1160" y2="56" stroke="#1B2840" stroke-width="1" />
+
+  <!-- Animated Connector Paths Between Layers -->
+  <path id="flow1" d="M 284 185 L 336 185" fill="none" stroke="#38BDF8" stroke-width="2" class="connector-line" />
+  <path id="flow2" d="M 580 185 L 632 185" fill="none" stroke="#2DD4BF" stroke-width="2" class="connector-line" />
+  <path id="flow3" d="M 876 185 L 928 185" fill="none" stroke="#818CF8" stroke-width="2" class="connector-line" />
+
+  <!-- Travelling Glowing Data Packets -->
+  <circle r="4" fill="#38BDF8">
+    <animateMotion dur="1.6s" repeatCount="indefinite" path="M 284 185 L 336 185" />
+  </circle>
+  <circle r="4" fill="#2DD4BF">
+    <animateMotion dur="1.6s" begin="0.4s" repeatCount="indefinite" path="M 580 185 L 632 185" />
+  </circle>
+  <circle r="4" fill="#818CF8">
+    <animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" path="M 876 185 L 928 185" />
+  </circle>
+
+  <!-- LAYER 1: Android OS Kernel & System APIs -->
+  <g transform="translate(40, 82)">
+    <rect x="0" y="0" width="244" height="218" rx="16" fill="#121C2E" stroke="#263B59" stroke-width="1.2" />
+    <rect x="16" y="16" width="84" height="22" rx="6" fill="#132B3F" />
+    <text x="58" y="31" text-anchor="middle" class="font-mono" font-size="10" font-weight="600" fill="#38BDF8">LAYER 01</text>
+    <text x="16" y="60" class="font-sans" font-size="16" font-weight="700" fill="#F8FAFC">Android System APIs</text>
+    <text x="16" y="80" class="font-sans" font-size="12" fill="#94A3B8">Hardware &amp; Kernel Counters</text>
+
+    <rect x="16" y="96" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="114" class="font-mono" font-size="11" fill="#E2E8F0">NetworkStatsManager</text>
+
+    <rect x="16" y="130" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="148" class="font-mono" font-size="11" fill="#E2E8F0">TrafficStats (Rx / Tx)</text>
+
+    <rect x="16" y="164" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="182" class="font-mono" font-size="11" fill="#E2E8F0">ConnectivityManager</text>
+  </g>
+
+  <!-- LAYER 2: Data Sources & Foreground Service -->
+  <g transform="translate(336, 82)">
+    <rect x="0" y="0" width="244" height="218" rx="16" fill="#121C2E" stroke="#1E4448" stroke-width="1.2" />
+    <rect x="16" y="16" width="84" height="22" rx="6" fill="#112E32" />
+    <text x="58" y="31" text-anchor="middle" class="font-mono" font-size="10" font-weight="600" fill="#2DD4BF">LAYER 02</text>
+    <text x="16" y="60" class="font-sans" font-size="16" font-weight="700" fill="#F8FAFC">Data &amp; Services</text>
+    <text x="16" y="80" class="font-sans" font-size="12" fill="#94A3B8">Dispatchers.IO &amp; LruCache</text>
+
+    <rect x="16" y="96" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="114" class="font-mono" font-size="11" fill="#E2E8F0">NetworkStatsDataSource</text>
+
+    <rect x="16" y="130" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="148" class="font-mono" font-size="11" fill="#E2E8F0">AppUsageDataSource</text>
+
+    <rect x="16" y="164" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="182" class="font-mono" font-size="11" fill="#2DD4BF">ForegroundService (API 35)</text>
+  </g>
+
+  <!-- LAYER 3: Domain Models & MVVM ViewModels -->
+  <g transform="translate(632, 82)">
+    <rect x="0" y="0" width="244" height="218" rx="16" fill="#121C2E" stroke="#31335E" stroke-width="1.2" />
+    <rect x="16" y="16" width="84" height="22" rx="6" fill="#1E2144" />
+    <text x="58" y="31" text-anchor="middle" class="font-mono" font-size="10" font-weight="600" fill="#818CF8">LAYER 03</text>
+    <text x="16" y="60" class="font-sans" font-size="16" font-weight="700" fill="#F8FAFC">Domain &amp; MVVM</text>
+    <text x="16" y="80" class="font-sans" font-size="12" fill="#94A3B8">Repositories &amp; StateFlows</text>
+
+    <rect x="16" y="96" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="114" class="font-mono" font-size="11" fill="#E2E8F0">Usage &amp; Prefs Repository</text>
+
+    <rect x="16" y="130" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="148" class="font-mono" font-size="11" fill="#E2E8F0">BillingCycleCalculator</text>
+
+    <rect x="16" y="164" width="212" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="182" class="font-mono" font-size="11" fill="#818CF8">Screen ViewModels (UDF)</text>
+  </g>
+
+  <!-- LAYER 4: Jetpack Compose Material 3 UI -->
+  <g transform="translate(928, 82)">
+    <rect x="0" y="0" width="232" height="218" rx="16" fill="#121C2E" stroke="#2DD4BF" stroke-opacity="0.45" stroke-width="1.2" />
+    <rect x="16" y="16" width="84" height="22" rx="6" fill="#112E32" />
+    <text x="58" y="31" text-anchor="middle" class="font-mono" font-size="10" font-weight="600" fill="#34D399">LAYER 04</text>
+    <text x="16" y="60" class="font-sans" font-size="16" font-weight="700" fill="#F8FAFC">Compose UI Layer</text>
+    <text x="16" y="80" class="font-sans" font-size="12" fill="#94A3B8">Custom Canvas &amp; Vectors</text>
+
+    <rect x="16" y="96" width="200" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="114" class="font-mono" font-size="11" fill="#E2E8F0">QuotaArcGauge &amp; Charts</text>
+
+    <rect x="16" y="130" width="200" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="148" class="font-mono" font-size="11" fill="#E2E8F0">30+ Vector ImageVectors</text>
+
+    <rect x="16" y="164" width="200" height="28" rx="7" fill="#18253B" />
+    <text x="28" y="182" class="font-mono" font-size="11" fill="#34D399">Midnight / AMOLED / Light</text>
+  </g>
+</svg>

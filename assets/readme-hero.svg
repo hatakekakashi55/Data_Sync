@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="100%" height="380" role="img" aria-label="Data Sync Native Kotlin Telemetry Banner">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070B14" />
+      <stop offset="55%" stop-color="#0D1526" />
+      <stop offset="100%" stop-color="#091E26" />
+    </linearGradient>
+
+    <radialGradient id="tealGlow" cx="76%" cy="50%" r="42%">
+      <stop offset="0%" stop-color="#2DD4BF" stop-opacity="0.18" />
+      <stop offset="60%" stop-color="#38BDF8" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#090D16" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#141F33" />
+      <stop offset="100%" stop-color="#0E1626" />
+    </linearGradient>
+
+    <linearGradient id="arcGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0D9488" />
+      <stop offset="55%" stop-color="#2DD4BF" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <linearGradient id="waveArea" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2DD4BF" stop-opacity="0.32" />
+      <stop offset="100%" stop-color="#2DD4BF" stop-opacity="0.0" />
+    </linearGradient>
+
+    <pattern id="gridPattern" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#1E293B" stroke-width="0.7" stroke-opacity="0.45" />
+    </pattern>
+
+    <style>
+      .font-sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, Helvetica, Arial, sans-serif; }
+      .font-mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+
+      @keyframes pulseDot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.35; transform: scale(1.35); }
+      }
+      @keyframes arrowDownBob {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(3px); }
+      }
+      @keyframes arrowUpBob {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-3px); }
+      }
+      @keyframes gaugeSweep {
+        0% { stroke-dashoffset: 255; }
+        25%, 85% { stroke-dashoffset: 74; }
+        100% { stroke-dashoffset: 74; }
+      }
+      @keyframes waveDash {
+        0% { stroke-dashoffset: 480; }
+        100% { stroke-dashoffset: 0; }
+      }
+      @keyframes glowBreath {
+        0%, 100% { opacity: 0.75; }
+        50% { opacity: 1; }
+      }
+
+      .live-dot { transform-box: fill-box; transform-origin: center; animation: pulseDot 2.2s ease-in-out infinite; }
+      .arrow-down { animation: arrowDownBob 2.6s ease-in-out infinite; }
+      .arrow-up { animation: arrowUpBob 2.6s ease-in-out infinite; }
+      .gauge-progress { stroke-dasharray: 255; stroke-dashoffset: 74; animation: gaugeSweep 3.6s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+      .wave-stroke { stroke-dasharray: 240; animation: waveDash 5s linear infinite; }
+      .aura { animation: glowBreath 4s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <!-- Outer Rounded Frame -->
+  <rect x="0" y="0" width="1200" height="380" rx="22" fill="url(#bgGrad)" />
+  <rect x="0" y="0" width="1200" height="380" rx="22" fill="url(#gridPattern)" />
+  <rect x="0" y="0" width="1200" height="380" rx="22" fill="url(#tealGlow)" class="aura" />
+  <rect x="1" y="1" width="1198" height="378" rx="21" fill="none" stroke="#1E2D45" stroke-width="1.5" />
+
+  <!-- LEFT SECTION: Brand Identity & Product Copy -->
+  <!-- Brand Mark Container -->
+  <g transform="translate(56, 52)">
+    <rect x="0" y="0" width="60" height="60" rx="16" fill="#122633" stroke="#2DD4BF" stroke-opacity="0.45" stroke-width="1.2" />
+    <g class="arrow-down">
+      <path d="M22 15 V43 M15 36 L22 43 L29 36" fill="none" stroke="#94A3B8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g class="arrow-up">
+      <path d="M38 45 V17 M31 24 L38 17 L45 24" fill="none" stroke="#2DD4BF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <!-- Status Pill -->
+    <g transform="translate(76, 14)">
+      <rect x="0" y="0" width="248" height="30" rx="15" fill="#111C2E" stroke="#23344E" stroke-width="1" />
+      <circle cx="17" cy="15" r="4.5" fill="#34D399" class="live-dot" />
+      <text x="30" y="19.5" class="font-mono" font-size="11.5" font-weight="600" letter-spacing="1" fill="#E2E8F0">v4.0.0 • NATIVE KOTLIN</text>
+    </g>
+  </g>
+
+  <!-- Headline & Description -->
+  <text x="56" y="168" class="font-sans" font-size="48" font-weight="700" letter-spacing="-1" fill="#F8FAFC">DATA SYNC</text>
+  <text x="56" y="202" class="font-sans" font-size="18" font-weight="500" fill="#2DD4BF">Enterprise Network Telemetry &amp; Quota Control for Android</text>
+  <text x="56" y="236" class="font-sans" font-size="14.5" fill="#94A3B8">Pure Kotlin 2.0 &amp; Jetpack Compose Material 3 architecture delivering real-time speed</text>
+  <text x="56" y="258" class="font-sans" font-size="14.5" fill="#94A3B8">sparklines, 30-day cycle intelligence, and UID app inspection with 100% local privacy.</text>
+
+  <!-- Tech Stack Badges Row -->
+  <g transform="translate(56, 292)">
+    <rect x="0" y="0" width="124" height="34" rx="9" fill="#131E31" stroke="#243552" />
+    <circle cx="18" cy="17" r="4" fill="#A78BFA" />
+    <text x="30" y="21.5" class="font-sans" font-size="12.5" font-weight="600" fill="#F1F5F9">Kotlin 2.0.21</text>
+
+    <rect x="136" y="0" width="166" height="34" rx="9" fill="#131E31" stroke="#243552" />
+    <circle cx="154" cy="17" r="4" fill="#2DD4BF" />
+    <text x="166" y="21.5" class="font-sans" font-size="12.5" font-weight="600" fill="#F1F5F9">Jetpack Compose M3</text>
+
+    <rect x="314" y="0" width="136" height="34" rx="9" fill="#131E31" stroke="#243552" />
+    <circle cx="332" cy="17" r="4" fill="#38BDF8" />
+    <text x="344" y="21.5" class="font-sans" font-size="12.5" font-weight="600" fill="#F1F5F9">Android SDK 35</text>
+
+    <rect x="462" y="0" width="152" height="34" rx="9" fill="#131E31" stroke="#243552" />
+    <circle cx="480" cy="17" r="4" fill="#34D399" />
+    <text x="492" y="21.5" class="font-sans" font-size="12.5" font-weight="600" fill="#F1F5F9">100% On-Device</text>
+  </g>
+
+  <!-- RIGHT SECTION: Live Telemetry HUD Card -->
+  <g transform="translate(692, 36)">
+    <rect x="0" y="0" width="456" height="308" rx="20" fill="url(#cardGrad)" stroke="#263856" stroke-width="1.2" />
+
+    <!-- Card Top Header -->
+    <text x="24" y="34" class="font-mono" font-size="11" font-weight="600" letter-spacing="1.2" fill="#64748B">LIVE TELEMETRY MONITOR</text>
+    <rect x="342" y="18" width="90" height="24" rx="12" fill="#11292B" stroke="#2DD4BF" stroke-opacity="0.4" />
+    <circle cx="357" cy="30" r="3.5" fill="#2DD4BF" class="live-dot" />
+    <text x="368" y="34" class="font-mono" font-size="10.5" font-weight="600" fill="#2DD4BF">WI-FI 5G</text>
+
+    <line x1="24" y1="52" x2="432" y2="52" stroke="#1E2C45" stroke-width="1" />
+
+    <!-- Left Sub-Panel: 260-Degree Animated Quota Arc Gauge -->
+    <g transform="translate(106, 146)">
+      <!-- Background Arc -->
+      <path d="M -56 47 A 73 73 0 1 1 56 47" fill="none" stroke="#1C2A42" stroke-width="10" stroke-linecap="round" />
+      <!-- Animated Active Arc -->
+      <path d="M -56 47 A 73 73 0 1 1 56 47" fill="none" stroke="url(#arcGrad)" stroke-width="10" stroke-linecap="round" class="gauge-progress" />
+      <text x="0" y="-14" text-anchor="middle" class="font-mono" font-size="9.5" letter-spacing="1" fill="#64748B">TODAY QUOTA</text>
+      <text x="0" y="14" text-anchor="middle" class="font-sans" font-size="25" font-weight="700" fill="#F8FAFC">1.42 GB</text>
+      <text x="0" y="34" text-anchor="middle" class="font-mono" font-size="10.5" fill="#2DD4BF">71% of 2.0 GB</text>
+    </g>
+
+    <!-- Right Sub-Panel: Throughput & Interface Split -->
+    <g transform="translate(216, 70)">
+      <rect x="0" y="0" width="216" height="58" rx="12" fill="#18243A" stroke="#243552" />
+      <path d="M18 21 V37 M13 32 L18 37 L23 32" fill="none" stroke="#2DD4BF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <text x="34" y="24" class="font-mono" font-size="10" letter-spacing="0.8" fill="#94A3B8">DOWNLOAD RATE</text>
+      <text x="34" y="44" class="font-sans" font-size="19" font-weight="700" fill="#F8FAFC">4.8 MB/s</text>
+      <text x="150" y="43" class="font-mono" font-size="10" fill="#34D399">PEAK 9.2</text>
+
+      <rect x="0" y="68" width="216" height="58" rx="12" fill="#18243A" stroke="#243552" />
+      <path d="M18 105 V89 M13 94 L18 89 L23 94" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <text x="34" y="92" class="font-mono" font-size="10" letter-spacing="0.8" fill="#94A3B8">UPLOAD RATE</text>
+      <text x="34" y="112" class="font-sans" font-size="19" font-weight="700" fill="#F8FAFC">620 KB/s</text>
+      <text x="150" y="111" class="font-mono" font-size="10" fill="#818CF8">LOW JITTER</text>
+    </g>
+
+    <!-- Bottom Sub-Panel: Live Cubic-Bezier Sparkline Waveform -->
+    <g transform="translate(24, 218)">
+      <line x1="0" y1="0" x2="408" y2="0" stroke="#1D2B44" stroke-width="1" />
+      <line x1="0" y1="34" x2="408" y2="34" stroke="#1D2B44" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="0" y1="68" x2="408" y2="68" stroke="#1D2B44" stroke-width="1" />
+
+      <path id="sparkWave" d="M 0 54 C 34 52, 48 24, 82 28 C 116 32, 134 48, 168 20 C 202 -4, 224 38, 258 30 C 292 22, 314 10, 348 16 C 374 20, 390 12, 408 14" fill="none" stroke="#2DD4BF" stroke-width="2.4" stroke-linecap="round" class="wave-stroke" />
+      <path d="M 0 54 C 34 52, 48 24, 82 28 C 116 32, 134 48, 168 20 C 202 -4, 224 38, 258 30 C 292 22, 314 10, 348 16 C 374 20, 390 12, 408 14 L 408 68 L 0 68 Z" fill="url(#waveArea)" />
+
+      <!-- Secondary Upload Line -->
+      <path d="M 0 60 C 44 58, 72 48, 112 52 C 152 56, 188 42, 232 46 C 276 50, 326 38, 368 44 C 388 46, 398 42, 408 43" fill="none" stroke="#A78BFA" stroke-width="1.5" stroke-opacity="0.7" />
+
+      <!-- Animated Telemetry Packet Travelling Along Download Wave -->
+      <circle r="4" fill="#F8FAFC" stroke="#2DD4BF" stroke-width="2">
+        <animateMotion dur="4.2s" repeatCount="indefinite" path="M 0 54 C 34 52, 48 24, 82 28 C 116 32, 134 48, 168 20 C 202 -4, 224 38, 258 30 C 292 22, 314 10, 348 16 C 374 20, 390 12, 408 14" />
+      </circle>
+    </g>
+  </g>
+</svg>

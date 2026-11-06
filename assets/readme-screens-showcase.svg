@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 440" width="100%" height="440" role="img" aria-label="Data Sync Four Screen Workspace Preview">
+  <defs>
+    <linearGradient id="showcaseBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080C15" />
+      <stop offset="100%" stop-color="#0E1728" />
+    </linearGradient>
+
+    <style>
+      .font-sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, Helvetica, Arial, sans-serif; }
+      .font-mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+
+      @keyframes barPulse {
+        0%, 100% { opacity: 0.82; }
+        50% { opacity: 1; }
+      }
+      @keyframes sliderGlide {
+        0%, 100% { transform: translateX(0px); }
+        50% { transform: translateX(18px); }
+      }
+      .bar-active { animation: barPulse 2.4s ease-in-out infinite; }
+      .knob-glide { animation: sliderGlide 4s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="440" rx="20" fill="url(#showcaseBg)" stroke="#1E2D45" stroke-width="1.5" />
+
+  <text x="40" y="38" class="font-mono" font-size="11.5" font-weight="600" letter-spacing="1.4" fill="#2DD4BF">INTERFACE WORKSPACE • ZERO EMOJIS • PRECISION GEOMETRIC ICONOGRAPHY</text>
+  <line x1="40" y1="54" x2="1160" y2="54" stroke="#1B2840" stroke-width="1" />
+
+  <!-- PHONE 1: OVERVIEW -->
+  <g transform="translate(42, 74)">
+    <rect x="0" y="0" width="256" height="338" rx="24" fill="#0B111E" stroke="#283A5A" stroke-width="2" />
+    <text x="20" y="32" class="font-sans" font-size="12" font-weight="700" fill="#F8FAFC">DATA SYNC</text>
+    <rect x="176" y="20" width="60" height="16" rx="8" fill="#122B2E" />
+    <text x="206" y="31" text-anchor="middle" class="font-mono" font-size="8.5" fill="#2DD4BF">WI-FI</text>
+
+    <!-- Gauge Card -->
+    <rect x="16" y="46" width="224" height="128" rx="14" fill="#141E30" stroke="#22324D" />
+    <path d="M 92 138 A 44 44 0 1 1 164 138" fill="none" stroke="#1E2C45" stroke-width="7" stroke-linecap="round" />
+    <path d="M 92 138 A 44 44 0 1 1 154 82" fill="none" stroke="#2DD4BF" stroke-width="7" stroke-linecap="round" />
+    <text x="128" y="112" text-anchor="middle" class="font-sans" font-size="17" font-weight="700" fill="#F8FAFC">1.42 GB</text>
+    <text x="128" y="128" text-anchor="middle" class="font-mono" font-size="8.5" fill="#2DD4BF">71% of 2.0 GB</text>
+    <text x="128" y="160" text-anchor="middle" class="font-mono" font-size="9" fill="#94A3B8">DL 1.28 GB  •  UL 140 MB</text>
+
+    <!-- Speed Strip -->
+    <rect x="16" y="184" width="224" height="68" rx="14" fill="#141E30" stroke="#22324D" />
+    <text x="28" y="202" class="font-mono" font-size="8.5" fill="#64748B">LIVE THROUGHPUT</text>
+    <text x="28" y="222" class="font-sans" font-size="13" font-weight="700" fill="#2DD4BF">4.8 MB/s</text>
+    <text x="136" y="222" class="font-sans" font-size="13" font-weight="700" fill="#A78BFA">620 KB/s</text>
+    <path d="M 28 242 Q 68 226, 108 236 T 188 228 T 228 232" fill="none" stroke="#2DD4BF" stroke-width="1.8" />
+
+    <!-- Mobile / Wi-Fi Split -->
+    <rect x="16" y="262" width="107" height="56" rx="12" fill="#141E30" stroke="#22324D" />
+    <text x="28" y="280" class="font-mono" font-size="8" fill="#818CF8">MOBILE</text>
+    <text x="28" y="302" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">412 MB</text>
+
+    <rect x="133" y="262" width="107" height="56" rx="12" fill="#141E30" stroke="#22324D" />
+    <text x="145" y="280" class="font-mono" font-size="8" fill="#38BDF8">WI-FI</text>
+    <text x="145" y="302" class="font-sans" font-size="13" font-weight="700" fill="#F8FAFC">1.01 GB</text>
+  </g>
+
+  <!-- PHONE 2: 30-DAY ANALYTICS -->
+  <g transform="translate(328, 74)">
+    <rect x="0" y="0" width="256" height="338" rx="24" fill="#0B111E" stroke="#283A5A" stroke-width="2" />
+    <text x="20" y="32" class="font-sans" font-size="12" font-weight="700" fill="#F8FAFC">ANALYTICS &amp; HISTORY</text>
+
+    <!-- KPI Row -->
+    <rect x="16" y="46" width="70" height="46" rx="10" fill="#141E30" stroke="#22324D" />
+    <text x="24" y="62" class="font-mono" font-size="7.5" fill="#64748B">30-DAY</text>
+    <text x="24" y="80" class="font-sans" font-size="11.5" font-weight="700" fill="#F8FAFC">42.6 GB</text>
+
+    <rect x="93" y="46" width="70" height="46" rx="10" fill="#141E30" stroke="#22324D" />
+    <text x="101" y="62" class="font-mono" font-size="7.5" fill="#64748B">AVG/DAY</text>
+    <text x="101" y="80" class="font-sans" font-size="11.5" font-weight="700" fill="#F8FAFC">1.42 GB</text>
+
+    <rect x="170" y="46" width="70" height="46" rx="10" fill="#141E30" stroke="#22324D" />
+    <text x="178" y="62" class="font-mono" font-size="7.5" fill="#64748B">PEAK</text>
+    <text x="178" y="80" class="font-sans" font-size="11.5" font-weight="700" fill="#2DD4BF">3.8 GB</text>
+
+    <!-- 30-Day Bar Chart Card -->
+    <rect x="16" y="102" width="224" height="134" rx="14" fill="#141E30" stroke="#22324D" />
+    <text x="28" y="122" class="font-mono" font-size="8.5" fill="#2DD4BF">TODAY • 1.42 GB SELECTED</text>
+    <g transform="translate(28, 136)">
+      <rect x="0" y="46" width="11" height="36" rx="3" fill="#283B5B" />
+      <rect x="17" y="32" width="11" height="50" rx="3" fill="#283B5B" />
+      <rect x="34" y="52" width="11" height="30" rx="3" fill="#283B5B" />
+      <rect x="51" y="20" width="11" height="62" rx="3" fill="#283B5B" />
+      <rect x="68" y="38" width="11" height="44" rx="3" fill="#283B5B" />
+      <rect x="85" y="28" width="11" height="54" rx="3" fill="#283B5B" />
+      <rect x="102" y="12" width="11" height="70" rx="3" fill="#283B5B" />
+      <rect x="119" y="42" width="11" height="40" rx="3" fill="#283B5B" />
+      <rect x="136" y="30" width="11" height="52" rx="3" fill="#283B5B" />
+      <rect x="153" y="24" width="11" height="58" rx="3" fill="#283B5B" />
+      <rect x="170" y="16" width="11" height="66" rx="3" fill="#2DD4BF" class="bar-active" />
+      <rect x="187" y="8" width="11" height="74" rx="3" fill="#38BDF8" class="bar-active" />
+    </g>
+
+    <!-- Donut Distribution Card -->
+    <rect x="16" y="246" width="224" height="72" rx="14" fill="#141E30" stroke="#22324D" />
+    <circle cx="52" cy="282" r="20" fill="none" stroke="#38BDF8" stroke-width="6" />
+    <path d="M 52 262 A 20 20 0 0 1 71 288" fill="none" stroke="#818CF8" stroke-width="6" />
+    <text x="88" y="277" class="font-sans" font-size="11" font-weight="600" fill="#F8FAFC">Wi-Fi 71% • Mobile 29%</text>
+    <text x="88" y="295" class="font-mono" font-size="9" fill="#94A3B8">Cycle Comparison Active</text>
+  </g>
+
+  <!-- PHONE 3: PER-APP TRAFFIC INSPECTOR -->
+  <g transform="translate(614, 74)">
+    <rect x="0" y="0" width="256" height="338" rx="24" fill="#0B111E" stroke="#283A5A" stroke-width="2" />
+    <text x="20" y="32" class="font-sans" font-size="12" font-weight="700" fill="#F8FAFC">APPLICATION TRAFFIC</text>
+
+    <!-- Search Input -->
+    <rect x="16" y="46" width="224" height="32" rx="9" fill="#141E30" stroke="#22324D" />
+    <text x="30" y="66" class="font-sans" font-size="10" fill="#64748B">Search application or package...</text>
+
+    <!-- App Row 1 -->
+    <rect x="16" y="88" width="224" height="68" rx="13" fill="#141E30" stroke="#22324D" />
+    <rect x="28" y="102" width="34" height="34" rx="9" fill="#132E35" />
+    <text x="72" y="114" class="font-sans" font-size="11.5" font-weight="600" fill="#F8FAFC">YouTube</text>
+    <text x="228" y="114" text-anchor="end" class="font-mono" font-size="10.5" font-weight="600" fill="#2DD4BF">684 MB</text>
+    <rect x="72" y="122" width="156" height="4" rx="2" fill="#1C2940" />
+    <rect x="72" y="122" width="118" height="4" rx="2" fill="#2DD4BF" />
+    <text x="72" y="140" class="font-mono" font-size="8.5" fill="#94A3B8">DL 668 MB • UL 16 MB</text>
+
+    <!-- App Row 2 -->
+    <rect x="16" y="164" width="224" height="68" rx="13" fill="#141E30" stroke="#22324D" />
+    <rect x="28" y="178" width="34" height="34" rx="9" fill="#1D2242" />
+    <text x="72" y="190" class="font-sans" font-size="11.5" font-weight="600" fill="#F8FAFC">Chrome Browser</text>
+    <text x="228" y="190" text-anchor="end" class="font-mono" font-size="10.5" font-weight="600" fill="#F8FAFC">342 MB</text>
+    <rect x="72" y="198" width="156" height="4" rx="2" fill="#1C2940" />
+    <rect x="72" y="198" width="76" height="4" rx="2" fill="#818CF8" />
+    <text x="72" y="216" class="font-mono" font-size="8.5" fill="#94A3B8">DL 318 MB • UL 24 MB</text>
+
+    <!-- App Row 3 -->
+    <rect x="16" y="240" width="224" height="68" rx="13" fill="#141E30" stroke="#22324D" />
+    <rect x="28" y="254" width="34" height="34" rx="9" fill="#132A42" />
+    <text x="72" y="266" class="font-sans" font-size="11.5" font-weight="600" fill="#F8FAFC">Hotspot &amp; Tethering</text>
+    <text x="228" y="266" text-anchor="end" class="font-mono" font-size="10.5" font-weight="600" fill="#F8FAFC">196 MB</text>
+    <rect x="72" y="274" width="156" height="4" rx="2" fill="#1C2940" />
+    <rect x="72" y="274" width="46" height="4" rx="2" fill="#38BDF8" />
+    <text x="72" y="292" class="font-mono" font-size="8.5" fill="#94A3B8">System UID Accounting</text>
+  </g>
+
+  <!-- PHONE 4: SETTINGS, QUOTA & THEMES -->
+  <g transform="translate(900, 74)">
+    <rect x="0" y="0" width="256" height="338" rx="24" fill="#0B111E" stroke="#283A5A" stroke-width="2" />
+    <text x="20" y="32" class="font-sans" font-size="12" font-weight="700" fill="#F8FAFC">SETTINGS &amp; CONTROLS</text>
+
+    <!-- Toggle Card -->
+    <rect x="16" y="46" width="224" height="86" rx="14" fill="#141E30" stroke="#22324D" />
+    <text x="28" y="70" class="font-sans" font-size="11" font-weight="600" fill="#F8FAFC">Live Telemetry Engine</text>
+    <rect x="196" y="57" width="32" height="18" rx="9" fill="#2DD4BF" />
+    <circle cx="219" cy="66" r="6.5" fill="#090D16" />
+
+    <line x1="28" y1="88" x2="228" y2="88" stroke="#1E2C45" />
+    <text x="28" y="112" class="font-sans" font-size="11" font-weight="600" fill="#F8FAFC">Status Bar Speed</text>
+    <rect x="196" y="99" width="32" height="18" rx="9" fill="#2DD4BF" />
+    <circle cx="219" cy="108" r="6.5" fill="#090D16" />
+
+    <!-- Quota Slider Card -->
+    <rect x="16" y="142" width="224" height="92" rx="14" fill="#141E30" stroke="#22324D" />
+    <text x="28" y="166" class="font-sans" font-size="11" font-weight="600" fill="#F8FAFC">Daily Data Quota</text>
+    <text x="228" y="166" text-anchor="end" class="font-mono" font-size="11" font-weight="700" fill="#2DD4BF">2.0 GB</text>
+    <rect x="28" y="184" width="200" height="5" rx="2.5" fill="#1C2940" />
+    <rect x="28" y="184" width="96" height="5" rx="2.5" fill="#2DD4BF" />
+    <g class="knob-glide">
+      <circle cx="124" cy="186.5" r="7.5" fill="#2DD4BF" />
+    </g>
+    <text x="28" y="216" class="font-mono" font-size="8.5" fill="#94A3B8">Alert Threshold: 80% • Cycle: 1st</text>
+
+    <!-- Theme Selector Card -->
+    <rect x="16" y="244" width="224" height="74" rx="14" fill="#141E30" stroke="#22324D" />
+    <text x="28" y="266" class="font-mono" font-size="8.5" fill="#64748B">WORKSPACE THEME</text>
+    <rect x="28" y="278" width="62" height="26" rx="7" fill="#132E35" stroke="#2DD4BF" stroke-width="1" />
+    <text x="59" y="295" text-anchor="middle" class="font-sans" font-size="9.5" font-weight="600" fill="#2DD4BF">Midnight</text>
+    <rect x="97" y="278" width="62" height="26" rx="7" fill="#090D16" stroke="#243552" />
+    <text x="128" y="295" text-anchor="middle" class="font-sans" font-size="9.5" fill="#94A3B8">AMOLED</text>
+    <rect x="166" y="278" width="62" height="26" rx="7" fill="#18243A" stroke="#243552" />
+    <text x="197" y="295" text-anchor="middle" class="font-sans" font-size="9.5" fill="#94A3B8">Daylight</text>
+  </g>
+</svg>
