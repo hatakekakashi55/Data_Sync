@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Data Sync</string>
+    <string name="app_tagline">Enterprise Network Telemetry &amp; Quota Control</string>
+    <string name="notif_channel_live_name">Live Usage Telemetry</string>
+    <string name="notif_channel_live_desc">Persistent status bar telemetry showing real-time speed and daily data usage.</string>
+    <string name="notif_channel_alert_name">Data Quota Alerts</string>
+    <string name="notif_channel_alert_desc">Alerts when daily mobile and Wi-Fi consumption approaches or exceeds your configured limit.</string>
+    <string name="notif_action_open">Open Dashboard</string>
+    <string name="notif_action_stop">Pause</string>
+</resources>

@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Data Sync</string>
-    <string name="title_activity_main">Data Sync</string>
-    <string name="package_name">com.nexussync.datausage</string>
-    <string name="custom_url_scheme">com.nexussync.datausage</string>
-</resources>
