@@ -1,0 +1,54 @@
+name: Android Kotlin APK Build
+
+on:
+  push:
+    branches: [ "main", "arena/**" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build & Test Data Sync Kotlin APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x gradlew
+
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Assemble Debug & Optimized Release APKs
+        run: ./gradlew assembleDebug assembleRelease
+
+      - name: Prepare Named APK Deliverables
+        run: |
+          mkdir -p dist-apk
+          cp app/build/outputs/apk/debug/app-debug.apk dist-apk/DataSync-v4.0.0-debug.apk
+          cp app/build/outputs/apk/release/app-release.apk dist-apk/DataSync-v4.0.0-release.apk
+          ls -lh dist-apk/
+
+      - name: Upload Data Sync Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataSync-v4.0.0-debug-apk
+          path: dist-apk/DataSync-v4.0.0-debug.apk
+
+      - name: Upload Data Sync Optimized Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataSync-v4.0.0-release-apk
+          path: dist-apk/DataSync-v4.0.0-release.apk
